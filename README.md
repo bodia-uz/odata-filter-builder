@@ -1,192 +1,20 @@
-# odata-filter-builder
+# OData Filter Builder
 
-
-
-
-### `undefined`
-
-comparison field lambda expression
-
-### Example
-
-```js
-// returns 'tolower(Translation/Ru) eq 'a''
-f()
- .eq(x => x.tolower('Translation/Ru'), 'a');
-```
-
-
-**Returns** `string`, 
-
-
-### `undefined`
-
-comparison rule lambda expression
-
-### Example
-
-```js
-// returns '(Type/Id eq 1) and (contains(Name, 'a'))'
-f()
- .and(x => x.eq('Type/Id', 1))
- .and(x => x.contains('Name', 'a'));
-```
-
-
-**Returns** `ODataFilterBuilder`, 
-
-
-### `undefined`
-
-comparison input rule
-
-### Example
-
-```js
-f().and(inputRule)
-// string
-f().and('Id eq 1');
-// ODataFilterBuilder
-f().and(f().eq('Id', 1));
-// ruleLambdaExpression
-f().and(x => x.eq('Id', 1));
-```
-
-
-### `undefined`
-
-comparison input field
-
-### Example
-
-```js
-// returns 'contains(tolower(Translation/Ru), 'a')
-f().contains(inputField, 'a')
-
-// string
-f().contains('tolower(Translation/Ru)', 'a');
-// fieldLambdaExpression
-f().contains(x => x.tolower('Name', ''), 'a');
-```
-
-
-### `_add(source, source.condition, source.rules, rule, [condition])`
-
-Reduce source with new rule and/or condition
-
-### Parameters
-
-| parameter          | type           | description          |
-| ------------------ | -------------- | -------------------- |
-| `source`           | Object         |                      |
-| `source.condition` | string         |                      |
-| `source.rules`     | Array          |                      |
-| `rule`             | Object\,string |                      |
-| `[condition]`      | string         | _optional:_ (and/or) |
-
-
-
-**Returns** `Object`, 
-
-
-### `_not(rule)`
-
-Negate rule
-
-### Parameters
-
-| parameter | type | description |
-| --------- | ---- | ----------- |
-| `rule`    |      |             |
-
-
-
-### `_function(functionName, field, [values])`
-
-
-
-### Parameters
-
-| parameter      | type   | description                                |
-| -------------- | ------ | ------------------------------------------ |
-| `functionName` | string | - function name                            |
-| `field`        | string | - field name                               |
-| `[values]`     |        | _optional:_ - zero or more function values |
-
-
-
-**Returns** `string`, 
-
-
-### `_compare(field, operator, value)`
-
-
-
-### Parameters
-
-| parameter  | type           | description |
-| ---------- | -------------- | ----------- |
-| `field`    |                |             |
-| `operator` | string         |             |
-| `value`    | string\,number |             |
-
-
-
-**Returns** `string`, 
-
-
-### `_sourceRuleToString(rule, [wrapInParenthesis=false])`
-
-Convert source rule to string
-
-### Parameters
-
-| parameter                   | type           | description  |
-| --------------------------- | -------------- | ------------ |
-| `rule`                      | Object\,string |              |
-| `[wrapInParenthesis=false]` | boolean        | _optional:_  |
-
-
-
-**Returns** `string`, 
-
-
-### `_inputRuleToString(rule)`
-
-Convert input rule to string
-
-### Parameters
-
-| parameter | type | description |
-| --------- | ---- | ----------- |
-| `rule`    |      |             |
-
-
-
-### `_inputFieldToString(field)`
-
-Convert input field to string if field is lambda expression
-
-### Parameters
-
-| parameter | type | description |
-| --------- | ---- | ----------- |
-| `field`   |      |             |
-
-
-### Example
-
-```js
-// returns tolower(Name)
-_inputFieldToString(x => x.tolower('Name'));
-_inputFieldToString('tolower(Name)');
-```
-
+## Constructors
 
 ### `ODataFilterBuilder([condition='and'])`
 
 Creates a new ODataFilterBuilder instance.
-Can be userd without "new" operator
+Can be userd without "new" operator.
+
+Use short name as alias.
+```js
+const f = ODataFilterBuilder;
+// returns "(Id eq 1) and (Foo eq 'Bar')"
+f()
+  .eq('Id', 1)
+  .eq('Foo', 'Bar');
+```
 
 ### Parameters
 
@@ -209,7 +37,7 @@ f().eq('Id', '1');
 **Returns** `ODataFilterBuilder`, 
 
 
-### `and`
+### `f.and()`
 
 Creates new OData filter builder with AND as base condition
 
@@ -227,7 +55,7 @@ f.and()
 **Returns** `ODataFilterBuilder`, returns new ODataFilterBuilder instance with AND as base condition
 
 
-### `or`
+### `f.or()`
 
 Create new OData filter builder with OR as base condition
 
@@ -245,12 +73,9 @@ f.or()
 **Returns** `ODataFilterBuilder`, returns new ODataFilterBuilder instance with OR as base condition
 
 
-### `functions`
+## `ODataFilterBuilder` Static Canonical Functions
 
-Canonical Functions
-
-
-### `length(field)`
+### `f.functions.length(field)`
 
 The length function returns the number of characters in the parameter value.
 
@@ -272,7 +97,7 @@ f().eq(x => x.length('CompanyName'), 19)
 **Returns** `string`, 
 
 
-### `indexof(field, value)`
+### `f.functions.indexof(field, value)`
 
 The indexof function returns the zero-based character position of the first occurrence of the second parameter value in the first parameter value.
 
@@ -288,36 +113,16 @@ The indexof function returns the zero-based character position of the first occu
 
 ```js
 // indexof(CompanyName,'lfreds') eq 1
-f().eq(f.func.indexof('CompanyName', 'lfreds'), 1)
+f().eq(f.functions.indexof('CompanyName', 'lfreds'), 1)
 ```
 
 
 **Returns** `string`, 
 
-
-### `_add(rule, [condition=base)`
-
-The 'add' method adds new filter rule with AND or OR condition
-if condition not provided. Source condition is used (AND by default)
-
-### Parameters
-
-| parameter         | type   | description            |
-| ----------------- | ------ | ---------------------- |
-| `rule`            |        |                        |
-| `[condition=base` | string | _optional:_ condition] |
+## `ODataFilterBuilder.prototype` Logical Operators
 
 
-
-**Returns** `ODataFilterBuilder`, 
-
-
-### `undefined`
-
-Logical Operators
-
-
-### `and(rule)`
+### `f().and(rule)`
 
 Logical And
 
@@ -332,7 +137,7 @@ Logical And
 **Returns** `ODataFilterBuilder`, 
 
 
-### `or(rule)`
+### `f().or(rule)`
 
 Logical Or
 
@@ -347,7 +152,7 @@ Logical Or
 **Returns** `ODataFilterBuilder`, 
 
 
-### `not(rule)`
+### `f().not(rule)`
 
 Logical Negation
 
@@ -362,24 +167,7 @@ Logical Negation
 **Returns** `ODataFilterBuilder`, 
 
 
-### `_compare(field, operator, value)`
-
-Logical compare field and value by operator
-
-### Parameters
-
-| parameter  | type           | description |
-| ---------- | -------------- | ----------- |
-| `field`    |                |             |
-| `operator` | string         |             |
-| `value`    | string\,number |             |
-
-
-
-**Returns** `ODataFilterBuilder`, 
-
-
-### `eq(field, value)`
+### `f().eq(field, value)`
 
 Equal
 
@@ -395,7 +183,7 @@ Equal
 **Returns** `ODataFilterBuilder`, 
 
 
-### `ne(field, value)`
+### `f().ne(field, value)`
 
 Not Equal
 
@@ -411,7 +199,7 @@ Not Equal
 **Returns** `ODataFilterBuilder`, 
 
 
-### `gt(field, value)`
+### `f().gt(field, value)`
 
 Greater Than
 
@@ -427,7 +215,7 @@ Greater Than
 **Returns** `ODataFilterBuilder`, 
 
 
-### `ge(field, value)`
+### `f().ge(field, value)`
 
 Greater than or Equal
 
@@ -443,7 +231,7 @@ Greater than or Equal
 **Returns** `ODataFilterBuilder`, 
 
 
-### `lt(field, value)`
+### `f().lt(field, value)`
 
 Less Than
 
@@ -459,7 +247,7 @@ Less Than
 **Returns** `ODataFilterBuilder`, 
 
 
-### `le(field, value)`
+### `f().le(field, value)`
 
 Less than or Equal
 
@@ -475,7 +263,7 @@ Less than or Equal
 **Returns** `ODataFilterBuilder`, 
 
 
-### `in(field, values)`
+### `f().in(field, values)`
 
 
 
@@ -491,7 +279,7 @@ Less than or Equal
 **Returns** `ODataFilterBuilder`, 
 
 
-### `notIn(field, values)`
+### `f().notIn(field, values)`
 
 
 
@@ -507,12 +295,10 @@ Less than or Equal
 **Returns** `ODataFilterBuilder`, 
 
 
-### `undefined`
-
-Canonical Functions
+## `ODataFilterBuilder.prototype` Canonical Functions
 
 
-### `contains(field, value)`
+### `f().contains(field, value)`
 
 The contains function returns true if the second parameter string value is a substring of the first parameter string value.
 
@@ -534,7 +320,7 @@ The contains function returns true if the second parameter string value is a sub
 **Returns** `ODataFilterBuilder`, 
 
 
-### `startswith(field, value)`
+### `f().startswith(field, value)`
 
 The startswith function returns true if the first parameter string value starts with the second parameter string value.
 
@@ -556,7 +342,7 @@ The startswith function returns true if the first parameter string value starts 
 **Returns** `ODataFilterBuilder`, 
 
 
-### `endswith(field, value)`
+### `f().endswith(field, value)`
 
 The endswith function returns true if the first parameter string value ends with the second parameter string value.
 
@@ -578,7 +364,7 @@ The endswith function returns true if the first parameter string value ends with
 **Returns** `ODataFilterBuilder`, 
 
 
-### `toString`
+### `f().toString`
 
 Convert filter builder instance to string
 
