@@ -12,11 +12,14 @@ Can be userd without "new" operator.
 
 Use short name as alias.
 ```js
+// var f = require('odata-filter-builder');
+// import f from 'odata-filter-builder';
 const f = ODataFilterBuilder;
-// returns "(Id eq 1) and (Foo eq 'Bar')"
+
 f()
   .eq('Id', 1)
   .eq('Foo', 'Bar');
+// (Id eq 1) and (Foo eq 'Bar')
 ```
 
 ### Parameters
@@ -37,19 +40,27 @@ const f = ODataFilterBuilder;
 // default base condition is 'and'
 f()
  .eq('TypeId', '1')
- .eq('SubType/Id', '1')
+ .contains(x => x.toLower('Name'), 'a')
  .toString();
-// returns `(TypeId eq '1') and (SubType/Id eq 1)`
+// (TypeId eq '1') and (contains(tolower(Name), 'a'))
 ```
 ```js
 // 'or' condition as base condition
 f('or')
-  .eq('TypeId', '1')
-  .eq('SubType/Id', '1')
+  .eq(x => x.toLower('Name'), 'foo')
+  .eq(x => x.toLower('Name'), 'bar')
   .toString();
-// returns `(TypeId eq '1') or (SubType/Id eq 1)`
+// (tolower(Name) eq 'foo') or (tolower(Name) eq 'bar')
 ```
-
+```js
+// combination of 'or' and 'and'
+f('or')
+  .contains(x => x.toLower('Name'), 'google')
+  .contains(x => x.toLower('Name'), 'yandex')
+  .and(x => x.eq('Type/Name', 'Search Engine'))
+  .toString();
+// ((contains(tolower(Name), 'google')) or (contains(tolower(Name), 'yandex'))) and (Type/Name eq 'Search Engine')
+```
 
 **Returns** `ODataFilterBuilder`, 
 
@@ -62,10 +73,10 @@ Creates new OData filter builder with AND as base condition
 
 ```js
 f.and()
- .eq('a', 1)
- .eq('b', 2)
+ .eq('Type/Id', 3)
+ .eq(x => x.concat(y => y.concat('City',', '), 'Country', false), 'Berlin, Germany')
  .toString();
- // return '(a eq 1) and (b eq 2)'
+// (Type/Id eq 3) and (concat(concat(City, ', '), Country) eq 'Berlin, Germany')
 ```
 
 
