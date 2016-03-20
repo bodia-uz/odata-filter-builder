@@ -550,7 +550,7 @@ ODataFilterBuilder.prototype = {
    * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
    */
   notIn(field, values, normaliseValues) {
-    return this._add(_joinRules(_compareMap(field, 'ne', values, normaliseValues), AND));
+    return this.not(rule => rule.in(field, values, normaliseValues));
   },
 
   // Canonical Functions

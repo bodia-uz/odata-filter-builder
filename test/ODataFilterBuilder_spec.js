@@ -102,7 +102,7 @@ describe('OData filter builder', () => {
             .notIn('Type/Id', [1, 2, '3']);
 
         expect(compare.toString())
-            .to.equal("Type/Id ne 1 and Type/Id ne 2 and Type/Id ne '3'");
+            .to.equal("not (Type/Id eq 1 or Type/Id eq 2 or Type/Id eq '3')");
       });
 
     });
