@@ -9,7 +9,7 @@ const OR = 'or';
  *  .toString(); 
  * // tolower(Name) eq 'a'
  * @callback ODataFilterBuilder~fieldLambdaExpression
- * @params {ODataFilterBuilder.functions}
+ * @param {ODataFilterBuilder.functions} - Filter canonical functions (toLower, substring, ...)
  * @returns  {string}
  */
 
@@ -22,7 +22,7 @@ const OR = 'or';
  *  .toString();
  * // (Type/Id eq 1) and (contains(Name, 'a'))
  * @callback ODataFilterBuilder~ruleLambdaExpression
- * @params {ODataFilterBuilder}
+ * @param {ODataFilterBuilder} - A new instance of {@link ODataFilterBuilder}
  * @returns  {ODataFilterBuilder}
  */
 
@@ -310,8 +310,8 @@ ODataFilterBuilder.functions = {
   /**
    * The length function returns the number of characters in the parameter value.
    * @example
-   * // return length(CompanyName) eq 19
    * f().eq(x => x.length('CompanyName'), 19)
+   * // length(CompanyName) eq 19
    * @param {ODataFilterBuilder~InputField} field - Field
    * @returns {string} A function string
    */
@@ -322,8 +322,8 @@ ODataFilterBuilder.functions = {
   /**
    * The tolower function returns the input parameter string value with all uppercase characters converted to lowercase.
    * @example
-   * // return tolower(CompanyName) eq 'alfreds futterkiste'
    * f().eq(x => x.toLower('CompanyName'), 'alfreds futterkiste')
+   * // tolower(CompanyName) eq 'alfreds futterkiste'
    * @param {ODataFilterBuilder~InputField} field - Field
    * @returns {string} A function string
    */
@@ -334,8 +334,8 @@ ODataFilterBuilder.functions = {
   /**
    * The toupper function returns the input parameter string value with all lowercase characters converted to uppercase.
    * @example
-   * // return toupper(CompanyName) eq 'ALFREDS FUTTERKISTE'
    * f().eq(x => x.toUpper('CompanyName'), 'ALFREDS FUTTERKISTE')
+   * // toupper(CompanyName) eq 'ALFREDS FUTTERKISTE'
    * @param {ODataFilterBuilder~InputField} field - Field
    * @returns {string} A function string
    */
@@ -346,8 +346,8 @@ ODataFilterBuilder.functions = {
   /**
    * The trim function returns the input parameter string value with all leading and trailing whitespace characters, removed.
    * @example
-   * // return trim(CompanyName) eq CompanyName
    * f().eq(x => x.trim('CompanyName'), 'CompanyName')
+   * // trim(CompanyName) eq CompanyName
    * @param {ODataFilterBuilder~InputField} field - Field
    * @returns {string} A function string
    */
@@ -358,11 +358,13 @@ ODataFilterBuilder.functions = {
   /**
    * The indexof function returns the zero-based character position of the first occurrence of the second parameter value in the first parameter value.
    * @example
-   * // indexof(CompanyName,'lfreds') eq 1
    * f().eq(f.functions.indexOf('CompanyName', 'lfreds'), 1)
    * f().eq(x => x.indexOf('CompanyName', 'lfreds'), 1)
+   * // indexof(CompanyName,'lfreds') eq 1
+   *
    * @param {ODataFilterBuilder~InputField} field - The first function parameter
    * @param {string} value - The second function parameter
+   *
    * @returns {string} A function string
    */
   indexOf(field, value) {
@@ -370,17 +372,23 @@ ODataFilterBuilder.functions = {
   },
 
   /**
-   * @param {ODataFilterBuilder~InputField} field - The first function parameter
-   * @param {number} value1 - The second function parameter
-   * @param {number} [value2] - The third function parameter
    * @example
-   * // substring(CompanyName, 1) eq 'lfreds Futterkiste'
    * f().eq(f.functions.substring('CompanyName', 1), 'lfreds Futterkiste');
    * f().eq(x => x.substring('CompanyName', 1), 'lfreds Futterkiste');
+   * // substring(CompanyName, 1) eq 'lfreds Futterkiste'
+   *
+   * @example
+   * f().eq(x => x.substring('CompanyName', 1, 2), 'lf').toString();
+   * f().eq(f.functions.substring('CompanyName', 1, 2), 'lf')
+   * // substring(CompanyName, 1, 2) eq 'lf'
+   *
+   * @param {ODataFilterBuilder~InputField} field - The first function parameter
+   * @param {...number} values - Second or second and third function parameters
+   *
    * @returns {string} A function string
    */
-  substring(field, value1, value2) {
-    return _function('substring', field, [value1, value2]);
+  substring(field, ...values) {
+    return _function('substring', field, values);
   },
 
   /**
@@ -388,8 +396,8 @@ ODataFilterBuilder.functions = {
    * @param {string} value - The second function parameter
    * @param {boolean} [normaliseValue=true] - Convert string "value" to "'value'" or not. (Convert by default)
    * @example
-   * // concat(concat(City, ', '), 'Country') eq 'Berlin, Germany'
    * f().eq(x => x.concat(y => y.concat('City',', '), 'Country', false), 'Berlin, Germany');
+   * // concat(concat(City, ', '), 'Country') eq 'Berlin, Germany'
    * @returns {string} A function string
    */
   concat(field, value, normaliseValue) {
@@ -404,7 +412,7 @@ ODataFilterBuilder.prototype = {
    * The 'add' method adds new filter rule with AND or OR condition
    * if condition not provided. Source condition is used (AND by default)
    * @this {ODataFilterBuilder}
-   * @param {Object|string} rule - Rule to add
+   * @param {ODataFilterBuilder~InputRule} rule - Rule to add
    * @param {string} [condition] - Condition for rule to add(and/or)
    * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
    * @private
