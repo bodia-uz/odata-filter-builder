@@ -7,6 +7,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
+    "test:cov": "babel-node $(npm bin)/isparta cover $(npm bin)/_mocha -- --recursive",
     "lint": "eslint src test src",
     "check": "npm run lint && npm run test",
     "build": "browserify src/exports.js --standalone 'f' -o dist/odata-filter-builder.js -t [ babelify ]",
@@ -26,6 +27,7 @@
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
     "eslint": "^2.4.0",
+    "isparta": "^4.0.0",
     "mocha": "^2.4.5"
   }
 }
