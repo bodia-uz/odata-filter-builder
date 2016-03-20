@@ -97,12 +97,60 @@ describe('OData filter builder', () => {
             .to.equal("Type/Id eq 1 or Type/Id eq 2 or Type/Id eq '3'");
       });
 
+      it('in(field, [])', () => {
+        const compare = f()
+            .in('Type/Id', []);
+
+        expect(compare.toString())
+            .to.equal('');
+      });
+
+      it('in(field, null)', () => {
+        const compare = f()
+            .in('Type/Id', null);
+
+        expect(compare.toString())
+            .to.equal('');
+      });
+
+      it('in(field, \'otherField\', false)', () => {
+        const compare = f()
+            .in('FullName', 'ShortName', false);
+
+        expect(compare.toString())
+            .to.equal('FullName eq ShortName');
+      });
+
       it('notIn(field, [1,2,3])', () => {
         const compare = f()
             .notIn('Type/Id', [1, 2, '3']);
 
         expect(compare.toString())
             .to.equal("not (Type/Id eq 1 or Type/Id eq 2 or Type/Id eq '3')");
+      });
+
+      it('notIn(field, [])', () => {
+        const compare = f()
+            .notIn('Type/Id', []);
+
+        expect(compare.toString())
+            .to.equal('');
+      });
+
+      it('notIn(field, null)', () => {
+        const compare = f()
+            .notIn('Type/Id', null);
+
+        expect(compare.toString())
+            .to.equal('');
+      });
+
+      it('notIn(field, \'1\')', () => {
+        const compare = f()
+            .notIn('Type/Id', 1);
+
+        expect(compare.toString())
+            .to.equal('not (Type/Id eq 1)');
       });
 
     });
@@ -225,17 +273,43 @@ describe('OData filter builder', () => {
     });
 
     it('trim', () => {
-      // * // return trim(CompanyName) eq CompanyName
-      // * f().eq(x => x.trim('CompanyName'), 'CompanyName')
       const func = f().eq(x => x.trim('CompanyName'), 'CompanyName', false);
 
       expect(func.toString())
           .to.equal('trim(CompanyName) eq CompanyName');
     });
 
+    it('indexOf', () => {
+      const func1 = f().eq(x => x.indexOf('CompanyName', 'lfreds'), 1);
+      const func2 = f().eq(f.functions.indexOf('CompanyName', 'lfreds'), 1);
+
+      expect(func1.toString())
+          .to.equal(func2.toString())
+          .to.equal("indexof(CompanyName, 'lfreds') eq 1");
+    });
+
+    it('substring', () => {
+      const func1 = f().eq(x => x.substring('CompanyName', 1), 'lfreds Futterkiste');
+      const func2 = f().eq(f.functions.substring('CompanyName', 1), 'lfreds Futterkiste');
+
+      const func3 = f().eq(x => x.substring('CompanyName', 1, 2), 'lf');
+      const func4 = f().eq(f.functions.substring('CompanyName', 1, 2), 'lf');
+
+      expect(func1.toString())
+          .to.equal(func2.toString())
+          .to.equal("substring(CompanyName, 1) eq 'lfreds Futterkiste'");
+
+      expect(func3.toString())
+          .to.equal(func4.toString())
+          .to.equal("substring(CompanyName, 1, 2) eq 'lf'");
+
+    });
+
+    // * // substring(CompanyName, 1) eq 'lfreds Futterkiste'
+    // * f().eq(f.functions.substring('CompanyName', 1), 'lfreds Futterkiste');
+    // * f().eq(x => x.substring('CompanyName', 1), 'lfreds Futterkiste');
+
     it('concat', () => {
-      // * // return trim(CompanyName) eq CompanyName
-      // * f().eq(x => x.trim('CompanyName'), 'CompanyName')
       const func = f().eq(x => x.concat(y => y.concat('City', ', '), 'Country', false), 'Berlin, Germany');
 
       expect(func.toString())
@@ -246,7 +320,7 @@ describe('OData filter builder', () => {
 
   describe('combinations', () => {
     it('eq + contains + tolower', () => {
-      var filter = f()
+      const filter = f()
         .eq('Type/Id', 2)
         .contains(y => y.toLower('Name'), 'a');
 
@@ -255,11 +329,31 @@ describe('OData filter builder', () => {
     });
 
     it('not + eq + concat', () => {
-      var filter = f()
+      const filter = f()
           .not(x => x.eq(y => y.concat(z => z.concat('City', ', '), 'Country', false), 'Berlin, Germany'));
 
       expect(filter.toString())
           .to.equal("not (concat(concat(City, ', '), Country) eq 'Berlin, Germany')");
+    });
+    
+    it('and + or', () => {
+      const filter = f()
+          .contains(x => x.toLower('Name'), 'google')
+          .ne('Type/Name', 'Search Engine')
+          .or(x => x.eq('Type/Name', 'Search Engine'));
+
+      expect(filter.toString())
+          .to.equal("((contains(tolower(Name), 'google')) and (Type/Name ne 'Search Engine')) or (Type/Name eq 'Search Engine')");
+    });
+
+    it('or + and', () => {
+      const filter = f.or()
+          .contains(x => x.toLower('Name'), 'google')
+          .contains(x => x.toLower('Name'), 'yandex')
+          .and(x => x.eq('Type/Name', 'Search Engine'));
+
+      expect(filter.toString())
+          .to.equal("((contains(tolower(Name), 'google')) or (contains(tolower(Name), 'yandex'))) and (Type/Name eq 'Search Engine')");
     });
   });
 });
