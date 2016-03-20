@@ -1,6 +1,6 @@
 {
   "name": "odata-filter-builder",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "OData Filter Builder",
   "main": "lib/index.js",
   "jsnext:main": "src/ODataFilterBuilder.js",
