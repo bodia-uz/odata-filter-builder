@@ -5,7 +5,7 @@ const OR = 'or';
  * The comparison field lambda expression
  * @example
  * f()
- *  .eq(x => x.tolower('Name'), 'a')
+ *  .eq(x => x.toLower('Name'), 'a')
  *  .toString(); 
  * // tolower(Name) eq 'a'
  * @callback ODataFilterBuilder~fieldLambdaExpression
@@ -48,7 +48,7 @@ const OR = 'or';
  * // string
  * f().contains('tolower(Name)', 'a');
  * // fieldLambdaExpression
- * f().contains(x => x.tolower('Name', ''), 'a');
+ * f().contains(x => x.toLower('Name', ''), 'a');
  *
  * // returns 'contains(tolower(Name), 'a')
  */
@@ -218,7 +218,7 @@ function _inputRuleToString(rule) {
 /**
  * Convert input field to string if field is lambda expression
  * @example
- * _inputFieldToString(x => x.tolower('Name'));
+ * _inputFieldToString(x => x.toLower('Name'));
  * _inputFieldToString('tolower(Name)');
  * // returns 'tolower(Name)'
  * @param {ODataFilterBuilder~InputField} field - An input field
@@ -323,11 +323,11 @@ ODataFilterBuilder.functions = {
    * The tolower function returns the input parameter string value with all uppercase characters converted to lowercase.
    * @example
    * // return tolower(CompanyName) eq 'alfreds futterkiste'
-   * f().eq(x => x.tolower('CompanyName'), 'alfreds futterkiste')
+   * f().eq(x => x.toLower('CompanyName'), 'alfreds futterkiste')
    * @param {ODataFilterBuilder~InputField} field - Field
    * @returns {string} A function string
    */
-  tolower(field) {
+  toLower(field) {
     return _function('tolower', field);
   },
 
@@ -335,11 +335,11 @@ ODataFilterBuilder.functions = {
    * The toupper function returns the input parameter string value with all lowercase characters converted to uppercase.
    * @example
    * // return toupper(CompanyName) eq 'ALFREDS FUTTERKISTE'
-   * f().eq(x => x.toupper('CompanyName'), 'ALFREDS FUTTERKISTE')
+   * f().eq(x => x.toUpper('CompanyName'), 'ALFREDS FUTTERKISTE')
    * @param {ODataFilterBuilder~InputField} field - Field
    * @returns {string} A function string
    */
-  toupper(field) {
+  toUpper(field) {
     return _function('toupper', field);
   },
 
@@ -359,13 +359,13 @@ ODataFilterBuilder.functions = {
    * The indexof function returns the zero-based character position of the first occurrence of the second parameter value in the first parameter value.
    * @example
    * // indexof(CompanyName,'lfreds') eq 1
-   * f().eq(f.functions.indexof('CompanyName', 'lfreds'), 1)
-   * f().eq(x => x.indexof('CompanyName', 'lfreds'), 1)
+   * f().eq(f.functions.indexOf('CompanyName', 'lfreds'), 1)
+   * f().eq(x => x.indexOf('CompanyName', 'lfreds'), 1)
    * @param {ODataFilterBuilder~InputField} field - The first function parameter
    * @param {string} value - The second function parameter
    * @returns {string} A function string
    */
-  indexof(field, value) {
+  indexOf(field, value) {
     return _function('indexof', field, [value]);
   },
 
@@ -565,7 +565,7 @@ ODataFilterBuilder.prototype = {
    * @param {string} value - Value to compare
    * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
    */
-  startswith(field, value) {
+  startsWith(field, value) {
     return this._add(_function('startswith', field, value));
   },
 
@@ -577,7 +577,7 @@ ODataFilterBuilder.prototype = {
    * @param {string} value - Value to compare
    * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
    */
-  endswith(field, value) {
+  endsWith(field, value) {
     return this._add(_function('endswith', field, value));
   },
 
