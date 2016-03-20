@@ -4,9 +4,9 @@ const OR = 'or';
 /**
  * comparison field lambda expression
  * @example
- * // returns 'tolower(Translation/Ru) eq 'a''
+ * // returns 'tolower(Name) eq 'a''
  * f()
- *  .eq(x => x.tolower('Translation/Ru'), 'a');
+ *  .eq(x => x.tolower('Name'), 'a');
  * @callback ODataFilterBuilder~fieldLambdaExpression
  * @params {ODataFilterBuilder.functions}
  * @returns  {string}
@@ -41,11 +41,11 @@ const OR = 'or';
  * comparison input field
  * @typedef {string|ODataFilterBuilder~fieldLambdaExpression} ODataFilterBuilder~InputField
  * @example
- * // returns 'contains(tolower(Translation/Ru), 'a')
+ * // returns 'contains(tolower(Name), 'a')
  * f().contains(inputField, 'a')
  *
  * // string
- * f().contains('tolower(Translation/Ru)', 'a');
+ * f().contains('tolower(Name)', 'a');
  * // fieldLambdaExpression
  * f().contains(x => x.tolower('Name', ''), 'a');
  */
@@ -98,39 +98,61 @@ function _not(rule) {
 
 /**
  * @param {string} functionName - function name
- * @param {string} field - field name
- * @param {...*} [values] - zero or more function values
+ * @param {ODataFilterBuilder~InputField} field
+ * @param {Array|string|number} [values] - zero or more function values
+ * @param {boolean} [normaliseValues=true]
  * @returns {string}
  * @private
  */
-function _function(functionName, field, values) {
-  if (arguments.length === 2) {
+function _function(functionName, field, values, normaliseValues = true) {
+  // make sure that field is string
+  field = _inputFieldToString(field);
+
+  if (typeof values === 'undefined') {
+    values = [];
+  } else if (!Array.isArray(values)) {
+    values = [values];
+  }
+
+  if (values.length === 0) {
     return `${functionName}(${field})`;
   }
 
-  values = Array.prototype
-      .slice.call(arguments, 2)
-      .map(_normilise)
-      .join(', ');
+  if (normaliseValues) {
+    values = values.map(_normilise);
+  }
 
-  return `${functionName}(${field}, ${values})`;
+  return `${functionName}(${field}, ${values.join(', ')})`;
 }
 
 /**
  * @param {ODataFilterBuilder~InputField} field
  * @param {string} operator
  * @param {string|number|*} value
+ * @param {boolean} [normaliseValue=true]
  * @returns {string}
  * @private
  */
-function _compare(field, operator, value) {
+function _compare(field, operator, value, normaliseValue = true) {
   // make sure that field is string
   field = _inputFieldToString(field);
 
-  return `${field} ${operator} ${_normilise(value)}`;
+  if (normaliseValue) {
+    value = _normilise(value);
+  }
+
+  return `${field} ${operator} ${value}`;
 }
 
-function _compareMap(field, operator, values) {
+/**
+ * @param {ODataFilterBuilder~InputField} field
+ * @param {string} operator
+ * @param {Array} values
+ * @param {boolean} [normaliseValues=true]
+ * @returns {string[]}
+ * @private
+ */
+function _compareMap(field, operator, values, normaliseValues = true) {
   if (!values) {
     return [];
   }
@@ -139,10 +161,10 @@ function _compareMap(field, operator, values) {
   field = _inputFieldToString(field);
 
   if (!Array.isArray(values)) {
-    return [_compare(field, operator, values)];
+    return [_compare(field, operator, values, normaliseValues)];
   }
 
-  return values.map(v => _compare(field, operator, v));
+  return values.map(value => _compare(field, operator, value, normaliseValues));
 }
 
 function _joinRules(rules, condition) {
@@ -193,7 +215,7 @@ function _inputRuleToString(rule) {
  * @private
  */
 function _inputFieldToString(field) {
-  return typeof field === 'function' ? field(ODataFilterFunctions) : field;
+  return typeof field === 'function' ? field(ODataFilterBuilder.functions) : field;
 }
 
 /**
@@ -204,7 +226,7 @@ function _inputFieldToString(field) {
  * to build {@link http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html#_Toc406398094|$filter part}
  * for OData query options.
  * @see {@link http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html|OData URL Conventions} for further information.
- * @param {string} [condition='and'] - base condition (and/or).
+ * @param {('and'|'or')} [condition='and'] - base condition (and/or).
  * @example
  * // use short name as alias
  * const f = ODataFilterBuilder;
@@ -251,7 +273,9 @@ ODataFilterBuilder.or = () => new ODataFilterBuilder(OR);
 
 /**
  * Canonical Functions
- * @type ODataFilterBuilder.functions
+ * @memberof ODataFilterBuilder
+ * @namespace ODataFilterBuilder.functions
+ * @type {ODataFilterBuilder.functions}
  */
 ODataFilterBuilder.functions = {
   /**
@@ -260,7 +284,6 @@ ODataFilterBuilder.functions = {
    * // return length(CompanyName) eq 19
    * f().eq(x => x.length('CompanyName'), 19)
    * @param {string} field
-   * @memberof ODataFilterBuilder.func
    * @returns {string}
    */
   length(field) {
@@ -268,22 +291,82 @@ ODataFilterBuilder.functions = {
   },
 
   /**
+   * The tolower function returns the input parameter string value with all uppercase characters converted to lowercase.
+   * @example
+   * // return tolower(CompanyName) eq 'alfreds futterkiste'
+   * f().eq(x => x.tolower('CompanyName'), 'alfreds futterkiste')
+   * @param {string} field
+   * @returns {string}
+   */
+  tolower(field) {
+    return _function('tolower', field);
+  },
+
+  /**
+   * The toupper function returns the input parameter string value with all lowercase characters converted to uppercase.
+   * @example
+   * // return toupper(CompanyName) eq 'ALFREDS FUTTERKISTE'
+   * f().eq(x => x.toupper('CompanyName'), 'ALFREDS FUTTERKISTE')
+   * @param {string} field
+   * @returns {string}
+   */
+  toupper(field) {
+    return _function('toupper', field);
+  },
+
+  /**
+   * The trim function returns the input parameter string value with all leading and trailing whitespace characters, removed.
+   * @example
+   * // return trim(CompanyName) eq CompanyName
+   * f().eq(x => x.trim('CompanyName'), 'CompanyName')
+   * @param {string} field
+   * @returns {string}
+   */
+  trim(field) {
+    return _function('trim', field);
+  },
+
+  /**
    * The indexof function returns the zero-based character position of the first occurrence of the second parameter value in the first parameter value.
    * @example
    * // indexof(CompanyName,'lfreds') eq 1
-   * f().eq(f.func.indexof('CompanyName', 'lfreds'), 1)
+   * f().eq(f.functions.indexof('CompanyName', 'lfreds'), 1)
+   * f().eq(x => x.indexof('CompanyName', 'lfreds'), 1)
    * @param {string} field
    * @param {string} value
    * @returns {string}
    */
   indexof(field, value) {
-    return _function('indexof', field, value);
+    return _function('indexof', field, [value]);
   },
 
+  /**
+   * @param {string} field
+   * @param {number} value1
+   * @param {number} [value2]
+   * @example
+   * // substring(CompanyName, 1) eq 'lfreds Futterkiste'
+   * f().eq(f.functions.substring('CompanyName', 1), 'lfreds Futterkiste');
+   * f().eq(x => x.substring('CompanyName', 1), 'lfreds Futterkiste');
+   * @returns {string}
+   */
   substring(field, value1, value2) {
-    return _function('substring', field, value1, value2);
+    return _function('substring', field, [value1, value2]);
+  },
+
+  /**
+   * @param {string} field
+   * @param {string} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
+   * @example
+   * // concat(concat(City, ', '), 'Country') eq 'Berlin, Germany'
+   * f().eq(x => x.concat(y => y.concat('City',', '), 'Country', false), 'Berlin, Germany');
+   * @returns {string}
+   */
+  concat(field, value, normaliseValue) {
+    return _function('concat', field, [value], normaliseValue);
   }
-};;
+};
 
 ODataFilterBuilder.prototype = {
   /**
@@ -291,7 +374,7 @@ ODataFilterBuilder.prototype = {
    * if condition not provided. Source condition is used (AND by default)
    * @this {ODataFilterBuilder}
    * @param {ODataFilterBuilder~InputRule} rule
-   * @param {string} [condition=base condition]
+   * @param {('and'|'or')} [condition=base condition]
    * @private
    * @returns {ODataFilterBuilder}
    */
@@ -337,94 +420,100 @@ ODataFilterBuilder.prototype = {
    * @param {ODataFilterBuilder~InputField} field
    * @param {string} operator
    * @param {string|number|*} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @private
    * @returns {ODataFilterBuilder}
    */
-  _compare(field, operator, value) {
-    return this._add(_compare(field, operator, value));
+  _compare(field, operator, value, normaliseValue) {
+    return this._add(_compare(field, operator, value, normaliseValue));
   },
 
   /**
    * Equal
    * @param {ODataFilterBuilder~InputField} field - Field Name
    * @param {string|number|*} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  eq(field, value) {
-    return this._compare(field, 'eq', value);
+  eq(field, value, normaliseValue) {
+    return this._compare(field, 'eq', value, normaliseValue);
   },
 
   /**
    * Not Equal
    * @param {ODataFilterBuilder~InputField} field
    * @param {string|number|*} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  ne(field, value) {
-    return this._compare(field, 'ne', value);
+  ne(field, value, normaliseValue) {
+    return this._compare(field, 'ne', value, normaliseValue);
   },
 
   /**
    * Greater Than
    * @param {ODataFilterBuilder~InputField} field
    * @param {string|number|*} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  gt(field, value) {
-    return this._compare(field, 'gt', value);
+  gt(field, value, normaliseValue) {
+    return this._compare(field, 'gt', value, normaliseValue);
   },
 
   /**
    * Greater than or Equal
    * @param {ODataFilterBuilder~InputField} field
    * @param {string|number|*} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  ge(field, value) {
-    return this._compare(field, 'ge', value);
+  ge(field, value, normaliseValue) {
+    return this._compare(field, 'ge', value, normaliseValue);
   },
 
   /**
    * Less Than
    * @param {ODataFilterBuilder~InputField} field
    * @param {string|number|*} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  lt(field, value) {
-    return this._compare(field, 'lt', value);
+  lt(field, value, normaliseValue) {
+    return this._compare(field, 'lt', value, normaliseValue);
   },
 
   /**
    * Less than or Equal
    * @param {ODataFilterBuilder~InputField} field
    * @param {string|number|*} value
+   * @param {boolean} [normaliseValue=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  le(field, value) {
-    return this._compare(field, 'le', value);
+  le(field, value, normaliseValue) {
+    return this._compare(field, 'le', value, normaliseValue);
   },
 
   /**
    * @param {ODataFilterBuilder~InputField} field
    * @param {string[]|string} values
+   * @param {boolean} [normaliseValues=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  in(field, values) {
-    return this._add(_joinRules(_compareMap(field, 'eq', values), OR));
+  in(field, values, normaliseValues) {
+    return this._add(_joinRules(_compareMap(field, 'eq', values, normaliseValues), OR));
   },
 
   /**
    * @param {ODataFilterBuilder~InputField} field
-   * @param {string[]|string} values
+   * @param {boolean} [normaliseValues=true] - convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder}
    */
-  notIn(field, values) {
-    return this._add(_joinRules(_compareMap(field, 'ne', values), AND));
+  notIn(field, values, normaliseValues) {
+    return this._add(_joinRules(_compareMap(field, 'ne', values, normaliseValues), AND));
   },
 
-  /**
-   * Canonical Functions
-   */
+  // Canonical Functions
 
   /**
    * The contains function returns true if the second parameter string value is a substring of the first parameter string value.
@@ -471,6 +560,5 @@ ODataFilterBuilder.prototype = {
     return _sourceRuleToString(this.source);
   }
 };
-
 
 export default ODataFilterBuilder;
