@@ -11,7 +11,7 @@
     "lint": "eslint src test src",
     "check": "npm run lint && npm run test",
     "build": "browserify src/exports.js --standalone 'f' -o dist/odata-filter-builder.js -t [ babelify ]",
-    "jsdoc": "rm -r jsdoc/*; jsdoc -c ./jsdoc.json"
+    "jsdoc": "rm -r jsdoc/*; jsdoc -c ./jsdoc.json --readme ./README.md"
   },
   "keywords": [],
   "author": "",
