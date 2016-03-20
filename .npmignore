@@ -1,0 +1,6 @@
+*.log
+/.*
+/jsdoc.json
+/jsdoc/
+/coverage/
+/test/

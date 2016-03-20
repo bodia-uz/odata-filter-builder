@@ -1,33 +1,40 @@
 {
   "name": "odata-filter-builder",
   "version": "0.0.1",
-  "description": "",
-  "main": "src/index.js",
-  "private": true,
+  "description": "OData Filter Builder",
+  "main": "lib/index.js",
+  "jsnext:main": "src/ODataFilterBuilder.js",
+  "config": {
+    "standaloneName": "ODataFilterBuilder"
+  },
   "scripts": {
+    "clean": "rm -rf jsdoc lib dist coverage",
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
     "test:cov": "babel-node $(npm bin)/isparta cover $(npm bin)/_mocha -- --recursive",
     "lint": "eslint src test src",
     "check": "npm run lint && npm run test",
-    "build": "browserify src/exports.js --standalone 'f' -o dist/odata-filter-builder.js -t [ babelify ]",
-    "jsdoc": "rm -r jsdoc/*; jsdoc -c ./jsdoc.json --readme ./README.md"
+    "build:lib": "babel src --out-dir lib",
+    "build:umd": "browserify src/index.js -s $npm_package_config_standaloneName -o dist/odata-filter-builder.js -t [ babelify ]",
+    "build:umd:min": "browserify src/index.js -s $npm_package_config_standaloneName -t [ babelify ] | uglifyjs > dist/odata-filter-builder.min.js",
+    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
+    "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md"
   },
   "keywords": [],
-  "author": "",
+  "author": "Bohdan Lyzanets <bogdan.uz@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.6.5",
     "babel-core": "^6.7.2",
     "babel-eslint": "^6.0.0-beta.6",
     "babel-preset-es2015": "^6.6.0",
-    "babel-preset-stage-0": "^6.5.0",
-    "babel-preset-stage-2": "^6.5.0",
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
     "eslint": "^2.4.0",
     "isparta": "^4.0.0",
-    "mocha": "^2.4.5"
+    "jsdoc": "^3.4.0",
+    "mocha": "^2.4.5",
+    "uglify-js": "^2.6.2"
   }
 }
