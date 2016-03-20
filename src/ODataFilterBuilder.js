@@ -398,6 +398,8 @@ ODataFilterBuilder.functions = {
 };
 
 ODataFilterBuilder.prototype = {
+  constructor: ODataFilterBuilder,
+
   /**
    * The 'add' method adds new filter rule with AND or OR condition
    * if condition not provided. Source condition is used (AND by default)
