@@ -1,6 +1,6 @@
 {
   "name": "odata-filter-builder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "OData Filter Builder",
   "main": "lib/index.js",
   "jsnext:main": "src/ODataFilterBuilder.js",
@@ -24,7 +24,10 @@
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md"
   },
-  "keywords": ["javascript", "OData"],
+  "keywords": [
+    "javascript",
+    "OData"
+  ],
   "author": "Bohdan Lyzanets <bogdan.uz@gmail.com>",
   "license": "ISC",
   "devDependencies": {
