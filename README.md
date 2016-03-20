@@ -376,13 +376,26 @@ Convert filter builder instance to string
 Requires [nodejs](http://nodejs.org/).
 
 ```sh
-$ npm install odata-filter-builder
+$ npm install
 ```
 
 ## Tests
 
 ```sh
 $ npm test
+$ npm run test:watch
+```
+
+## Bild
+
+```sh
+$ npm run build
+```
+
+## JSDoc
+
+```sh
+$ npm run jsdoc
 ```
 
 
