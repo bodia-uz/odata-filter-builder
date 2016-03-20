@@ -5,11 +5,11 @@
   "main": "src/index.js",
   "private": true,
   "scripts": {
+    "test": "mocha --compilers js:babel-core/register --recursive",
+    "test:watch": "npm test -- --watch",
     "lint": "eslint src test src",
     "check": "npm run lint && npm run test",
     "build": "browserify src/exports.js --standalone 'f' -o dist/odata-filter-builder.js -t [ babelify ]",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive",
-    "test:watch": "npm run test -- --watch",
     "jsdoc": "rm -r jsdoc/*; jsdoc -c ./jsdoc.json"
   },
   "keywords": [],
