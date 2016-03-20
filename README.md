@@ -2,7 +2,7 @@
 
 ## Documentation
 * [OData URL Conventions](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html)
-* Logical operators [ODataFilterBuilder](https://htmlpreview.github.io/?https://github.com/bodia-uz/odata-filter-builder/blob/master/jsdoc/index.html)
+* Logical operators [ODataFilterBuilder](https://htmlpreview.github.io/?https://github.com/bodia-uz/odata-filter-builder/blob/master/jsdoc/ODataFilterBuilder.html)
 * Canonical functions [ODataFilterBuilder.filters](https://htmlpreview.github.io/?https://github.com/bodia-uz/odata-filter-builder/blob/master/jsdoc/ODataFilterBuilder.js.html)
 
 ### `ODataFilterBuilder([condition='and'])`
