@@ -89,12 +89,30 @@ f.or()
 
 **Returns** `ODataFilterBuilder`, returns new ODataFilterBuilder instance with OR as base condition
 
+
 ## Installation
 
-Requires [nodejs](http://nodejs.org/).
+The fastest way to get started is to serve JavaScript from the CDN:
+
+```html
+<script src="https://npmcdn.com/odata-filter-builder@0.0.1/dist/odata-filter-builder.js"></script>
+```
+
+Or minified version:
+
+```html
+<script src="https://npmcdn.com/odata-filter-builder@0.0.1/dist/odata-filter-builder.min.js"></script>
+```
+
+If you'd like to use [bower](http://bower.io):
 
 ```sh
-$ npm install
+$ bower install --save https://npmcdn.com/odata-filter-builder@0.0.1/dist/odata-filter-builder.js --save
+```
+And it's just as easy with [npm](http://npmjs.com):
+
+```sh
+$ npm i --save odata-filter-builder
 ```
 
 ## Tests
