@@ -103,7 +103,7 @@ f.or()
 
 ## Installation
 
-The fastest way to get started is to serve JavaScript from the [npmcdn|https://npmcdn.com]:
+The fastest way to get started is to serve JavaScript from the [npmcdn](https://npmcdn.com):
 
 ```html
 <script src="https://npmcdn.com/odata-filter-builder/dist/odata-filter-builder.js"></script>
@@ -115,16 +115,16 @@ Minified:
 <script src="https://npmcdn.com/odata-filter-builder/dist/odata-filter-builder.min.js"></script>
 ```
 
-Version or [version range|https://npmcdn.com]:
+Version or [version range](https://npmcdn.com):
 
 ```html
-<script src="https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js"></script>
+<script src="https://npmcdn.com/odata-filter-builder@0.0.3/dist/odata-filter-builder.js"></script>
 ```
 
 If you'd like to use [bower](http://bower.io):
 
 ```sh
-$ bower install --save https://npmcdn.com/odata-filter-builder/dist/odata-filter-builder.js --save
+$ bower install --save https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js --save
 ```
 And it's just as easy with [npm](http://npmjs.com):
 
