@@ -1,7 +1,7 @@
 # [OData Filter Builder](https://htmlpreview.github.io/?https://github.com/bodia-uz/odata-filter-builder/blob/master/jsdoc/index.html)
 
 [![build status](https://img.shields.io/travis/bodia-uz/odata-filter-builder/master.svg?style=flat-square)](https://travis-ci.org/bodia-uz/odata-filter-builder)
-[![npm version](https://img.shields.io/npm/v/odata-filter-builder.svg?style=flat-square)](https://www.npmjs.com/package/bodia-uz/odata-filter-builder)
+[![npm version](https://img.shields.io/npm/v/odata-filter-builder.svg?style=flat-square)](https://www.npmjs.com/package/odata-filter-builder)
 
 ## Documentation
 * [OData URL Conventions](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html)
