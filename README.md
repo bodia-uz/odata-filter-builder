@@ -1,41 +1,63 @@
-# [OData Filter Builder](https://htmlpreview.github.io/?https://github.com/bodia-uz/odata-filter-builder/blob/master/jsdoc/index.html)
+# [OData Filter Builder](https://bodia-uz.github.io/odata-filter-builder)
+
+`ODataFilterBuilder` is util to build
+[$filter part](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html#_Toc406398094)
+for
+[OData URL query options](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html)
 
 ## Documentation
-* [OData URL Conventions](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html)
-* Logical operators [ODataFilterBuilder](https://htmlpreview.github.io/?https://github.com/bodia-uz/odata-filter-builder/blob/master/jsdoc/ODataFilterBuilder.html)
-* Canonical functions [ODataFilterBuilder.filters](https://htmlpreview.github.io/?https://github.com/bodia-uz/odata-filter-builder/blob/master/jsdoc/ODataFilterBuilder.js.html)
-* Try it [in your browser.](https://jsbin.com/lafutap/edit?html,js,console)
+* [`ODataFilterBuilder`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.html) - logical operators
+* [`ODataFilterBuilder.filters`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.js.html) - canonical functions
 
-### `ODataFilterBuilder([condition='and'])`
+## Installation
 
-Creates a new ODataFilterBuilder instance.
-Can be userd without "new" operator.
+The fastest way to get started is to serve JavaScript from the [npmcdn](https://npmcdn.com):
 
-Use short name as alias.
-```js
-// var f = require('odata-filter-builder');
-// import f from 'odata-filter-builder';
-const f = ODataFilterBuilder;
-
-f()
-  .eq('Id', 1)
-  .eq('Foo', 'Bar');
-// (Id eq 1) and (Foo eq 'Bar')
+```html
+<!-- NOTE: See https://npmcdn.com how to use specific vesion. -->
+<!-- NOTE: not minified version - https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js -->
+<script src="https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.min.js"></script>
 ```
 
-### Parameters
-
-| parameter           | type   | description                            |
-| ------------------- | ------ | -------------------------------------- |
-| `[condition='and']` | string | _optional:_ - base condition (and/or). |
-
-
-### Example
-
 ```js
-// use short name as alias
-const f = ODataFilterBuilder;
+// now you can find the library on window.ODataFilterBuilder
+var f = ODataFilterBuilder;
 ```
+
+If you'd like to use [bower](http://bower.io):
+
+```sh
+$ bower install --save https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js --save
+```
+
+And it's just as easy with [npm](http://npmjs.com):
+
+```sh
+$ npm i --save odata-filter-builder
+```
+```js
+// using ES6 modules
+import f from 'odata-filter-builder';
+```
+```js
+// using CommonJS modules
+var f = require('odata-filter-builder');
+```
+
+Also you can try it [in your browser](https://jsbin.com/lafutap/edit?html,js,console)
+
+## How to use
+
+### `f([condition='and'])`
+
+Constructor for [`ODataFilterBuilder`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.html) class. Create new instance of filter builder.
+Can be used without `new` operator.
+
+| parameter           | type   | description                                |
+| ------------------- | ------ | ------------------------------------------ |
+| `[condition='and']` | string | _optional:_ base condition ('and'/'or'). |
+
+**Examples**
 ```js
 // can be used without "new" operator
 // default base condition is 'and'
@@ -45,6 +67,25 @@ f()
  .toString();
 // (TypeId eq '1') and (contains(tolower(Name), 'a'))
 ```
+```js
+// there are different constructors for 'and' as base condition
+// f(), f('and') and f.and()
+f('and')
+ .eq('Type/Id', 3)
+ .eq(x => x.concat(y => y.concat('City',', '), 'Country', false), 'Berlin, Germany')
+ .toString();
+// (Type/Id eq 3) and (concat(concat(City, ', '), Country) eq 'Berlin, Germany')
+```
+
+### `f.or()`
+
+[`ODataFilterBuilder`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.html)
+constructor alias.
+Same as  `f('or')`.
+Creates a new OData filter builder with `'or'` as base condition.
+
+**Examples**
+
 ```js
 // 'or' condition as base condition
 f('or')
@@ -63,77 +104,15 @@ f('or')
 // ((contains(tolower(Name), 'google')) or (contains(tolower(Name), 'yandex'))) and (Type/Name eq 'Search Engine')
 ```
 
-**Returns** `ODataFilterBuilder`, 
+### More examples
+You can find more examples in [test/ODataFilterBuilder_spec.js](https://github.com/bodia-uz/odata-filter-builder/blob/master/test/ODataFilterBuilder_spec.js)
+
+## Build your copy
+
+Clone [repository](https://github.com/bodia-uz/odata-filter-builder) and use npm scripts
 
 
-### `f.and()`
-
-Creates new OData filter builder with AND as base condition
-
-### Example
-
-```js
-f.and()
- .eq('Type/Id', 3)
- .eq(x => x.concat(y => y.concat('City',', '), 'Country', false), 'Berlin, Germany')
- .toString();
-// (Type/Id eq 3) and (concat(concat(City, ', '), Country) eq 'Berlin, Germany')
-```
-
-
-**Returns** `ODataFilterBuilder`, returns new ODataFilterBuilder instance with AND as base condition
-
-
-### `f.or()`
-
-Create new OData filter builder with OR as base condition
-
-### Example
-
-```js
-// return '(a eq 1) or (b eq 2)'
-f.or()
- .eq('a', 1)
- .eq('b', 2)
- .toString();
-```
-
-
-**Returns** `ODataFilterBuilder`, returns new ODataFilterBuilder instance with OR as base condition
-
-
-## Installation
-
-The fastest way to get started is to serve JavaScript from the [npmcdn](https://npmcdn.com):
-
-```html
-<script src="https://npmcdn.com/odata-filter-builder/dist/odata-filter-builder.js"></script>
-```
-
-Minified:
-
-```html
-<script src="https://npmcdn.com/odata-filter-builder/dist/odata-filter-builder.min.js"></script>
-```
-
-Version or [version range](https://npmcdn.com):
-
-```html
-<script src="https://npmcdn.com/odata-filter-builder@0.0.3/dist/odata-filter-builder.js"></script>
-```
-
-If you'd like to use [bower](http://bower.io):
-
-```sh
-$ bower install --save https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js --save
-```
-And it's just as easy with [npm](http://npmjs.com):
-
-```sh
-$ npm i --save odata-filter-builder
-```
-
-## Tests
+### Tests
 
 ```sh
 $ npm test
@@ -142,13 +121,13 @@ $ npm run test:cov
 $ npm run lint
 ```
 
-## Bild
+### Build
 
 ```sh
 $ npm run build
 ```
 
-## JSDoc
+### JSDoc
 
 ```sh
 $ npm run jsdoc
