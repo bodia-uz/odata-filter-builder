@@ -16,7 +16,7 @@
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
     "test:cov": "babel-node $(npm bin)/isparta cover $(npm bin)/_mocha -- --recursive",
-    "lint": "eslint src test src",
+    "lint": "eslint src test",
     "check": "npm run lint && npm run test",
     "build:lib": "babel src --out-dir lib",
     "build:umd": "browserify src/index.js -s $npm_package_config_standaloneName -o dist/odata-filter-builder.js -t [ babelify ]",
@@ -25,8 +25,8 @@
     "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md"
   },
   "keywords": [
-    "javascript",
-    "OData"
+    "OData",
+    "filter"
   ],
   "author": "Bohdan Lyzanets <bogdan.uz@gmail.com>",
   "license": "ISC",
