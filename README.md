@@ -1,4 +1,11 @@
 # [OData Filter Builder](https://bodia-uz.github.io/odata-filter-builder)
+`ODataFilterBuilder` is util to build
+[$filter part](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html#_Toc406398094)
+for
+[OData URL query options](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html)
+
+[![npm version](https://img.shields.io/npm/v/odata-filter-builder.svg?style=flat-square)](https://www.npmjs.com/package/odata-filter-builder)
+[![build status](https://img.shields.io/travis/bodia-uz/odata-filter-builder/master.svg?style=flat-square)](https://travis-ci.org/bodia-uz/odata-filter-builder)
 
 ## Documentation
 * [`ODataFilterBuilder`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.html) - logical operators
