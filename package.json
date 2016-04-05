@@ -2,14 +2,11 @@
   "name": "odata-filter-builder",
   "version": "0.0.4",
   "description": "OData Filter Builder",
-  "main": "lib/index.js",
+  "main": "lib/ODataFilterBuilder.js",
   "jsnext:main": "src/ODataFilterBuilder.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
-  },
-  "config": {
-    "standaloneName": "ODataFilterBuilder"
   },
   "scripts": {
     "clean": "rm -rf jsdoc lib dist coverage",
@@ -18,9 +15,9 @@
     "test:cov": "babel-node $(npm bin)/isparta cover $(npm bin)/_mocha -- --recursive",
     "lint": "eslint src test",
     "check": "npm run lint && npm run test",
-    "build:lib": "babel src --out-dir lib",
-    "build:umd": "browserify src/index.js -s $npm_package_config_standaloneName -o dist/odata-filter-builder.js -t [ babelify ]",
-    "build:umd:min": "browserify src/index.js -s $npm_package_config_standaloneName -t [ babelify ] | uglifyjs > dist/odata-filter-builder.min.js",
+    "build:lib": "rollup -c -f cjs src/ODataFilterBuilder.js > lib/ODataFilterBuilder.js",
+    "build:umd": "rollup -c -f umd -n ODataFilterBuilder src/ODataFilterBuilder.js > dist/odata-filter-builder.js",
+    "build:umd:min": "rollup -c -f umd -n ODataFilterBuilder src/ODataFilterBuilder.js | uglifyjs > dist/odata-filter-builder.min.js",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md"
   },
@@ -32,16 +29,17 @@
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.6.5",
-    "babel-core": "^6.7.2",
-    "babel-eslint": "^6.0.0-beta.6",
+    "babel-core": "^6.7.4",
+    "babel-eslint": "^6.0.2",
     "babel-preset-es2015": "^6.6.0",
-    "babelify": "^7.2.0",
-    "browserify": "^13.0.0",
+    "babel-preset-es2015-rollup": "^1.1.1",
     "chai": "^3.5.0",
-    "eslint": "^2.4.0",
+    "eslint": "^2.6.0",
     "isparta": "^4.0.0",
     "jsdoc": "^3.4.0",
     "mocha": "^2.4.5",
+    "rollup": "^0.25.8",
+    "rollup-plugin-babel": "^2.4.0",
     "uglify-js": "^2.6.2"
   }
 }
