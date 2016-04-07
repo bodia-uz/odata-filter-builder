@@ -107,7 +107,9 @@ f('or')
 ```
 
 ### More examples
-You can find more examples in [test/ODataFilterBuilder_spec.js](https://github.com/bodia-uz/odata-filter-builder/blob/master/test/ODataFilterBuilder_spec.js)
+You can find more examples in [test/ODataFilterBuilder_spec.js](https://github.com/bodia-uz/odata-filter-builder/blob/master/test/ODataFilterBuilder_spec.js).
+
+To use with [AngularJS](https://angularjs.org/) see [http://stackoverflow.com/a/36128276/223750](http://stackoverflow.com/a/36128276/223750).
 
 ## Build your copy
 
