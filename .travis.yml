@@ -14,4 +14,4 @@ cache:
   directories:
   - $HOME/.npm
 after_success:
-  - coveralls
+  - npm run coveralls
