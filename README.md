@@ -5,7 +5,8 @@ for
 [OData URL query options](http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part2-url-conventions/odata-v4.0-errata02-os-part2-url-conventions-complete.html)
 
 [![npm version](https://img.shields.io/npm/v/odata-filter-builder.svg?style=flat-square)](https://www.npmjs.com/package/odata-filter-builder)
-[![build status](https://img.shields.io/travis/bodia-uz/odata-filter-builder/master.svg?style=flat-square)](https://travis-ci.org/bodia-uz/odata-filter-builder)
+[![Build Status](https://travis-ci.org/bodia-uz/odata-filter-builder.svg?branch=master)](https://travis-ci.org/bodia-uz/odata-filter-builder)
+[![Coverage Status](https://coveralls.io/repos/github/bodia-uz/odata-filter-builder/badge.svg?branch=master)](https://coveralls.io/github/bodia-uz/odata-filter-builder?branch=master)
 
 ## Documentation
 * [`ODataFilterBuilder`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.html) - logical operators
