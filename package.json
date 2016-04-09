@@ -4,6 +4,7 @@
   "description": "OData Filter Builder",
   "main": "lib/ODataFilterBuilder.js",
   "jsnext:main": "src/ODataFilterBuilder.js",
+  "typings": "./ODataFilterBuilder.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
