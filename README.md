@@ -10,7 +10,7 @@ for
 
 ## Documentation
 * [`ODataFilterBuilder`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.html) - logical operators
-* [`ODataFilterBuilder.filters`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.js.html) - canonical functions
+* [`ODataFilterBuilder.filters`](https://bodia-uz.github.io/odata-filter-builder/ODataFilterBuilder.functions.html) - canonical functions
 
 ## Installation
 
