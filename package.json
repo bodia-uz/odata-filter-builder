@@ -4,7 +4,7 @@
   "description": "OData Filter Builder",
   "main": "lib/ODataFilterBuilder.js",
   "jsnext:main": "src/ODataFilterBuilder.js",
-  "typings": "./ODataFilterBuilder.d.ts",
+  "typings": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
@@ -44,6 +44,8 @@
     "mocha": "^2.4.5",
     "rollup": "^0.25.8",
     "rollup-plugin-babel": "^2.4.0",
+    "typescript": "^1.8.9",
+    "typescript-definition-tester": "0.0.4",
     "uglify-js": "^2.6.2"
   }
 }
