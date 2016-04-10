@@ -68,6 +68,7 @@ function compareIn(field, values, normaliseValues) {
 }
 
 function compareNotIn(field, values, normaliseValues) {
+  // return joinRules(compareMap(field, 'ne', values, normaliseValues), 'and')
   return not(compareIn(field, values, normaliseValues));
 }
 
