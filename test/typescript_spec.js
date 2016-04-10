@@ -1,7 +1,6 @@
 /*eslint-env node, mocha */
 /*global describe, it*/
 import path from 'path';
-import {expect} from 'chai';
 import * as tt from 'typescript-definition-tester';
 
 describe('TypeScript definitions', function () {
