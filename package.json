@@ -29,7 +29,7 @@
     "filter"
   ],
   "author": "Bohdan Lyzanets <bogdan.uz@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.6.5",
     "babel-core": "^6.7.4",
