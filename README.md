@@ -30,13 +30,13 @@ var f = ODataFilterBuilder;
 If you'd like to use [bower](http://bower.io):
 
 ```sh
-$ bower install --save https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js --save
+$ bower install --save https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js
 ```
 
 And it's just as easy with [npm](http://npmjs.com):
 
 ```sh
-$ npm i --save odata-filter-builder
+$ npm install --save odata-filter-builder
 ```
 ```js
 // using ES6 modules
