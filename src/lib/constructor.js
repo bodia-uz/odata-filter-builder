@@ -3,8 +3,8 @@ function ODataFilterBuilder(condition = 'and') {
     return new ODataFilterBuilder(condition);
   }
 
-  this.condition = condition;
-  this.source = {
+  this._condition = condition;
+  this._source = {
     condition: condition,
     rules: []
   };

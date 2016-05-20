@@ -34,9 +34,9 @@ const proto = {
    * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
    * @private
    */
-  _add(rule, condition = this.condition) {
+  _add(rule, condition = this._condition) {
     // NOTE: if condition not provider, source condition uses
-    this.source = reduceSourceWithRule(this.source, inputRuleToString(rule), condition);
+    this._source = reduceSourceWithRule(this._source, inputRuleToString(rule), condition);
     return this;
   },
 
@@ -196,7 +196,7 @@ const proto = {
    * @returns {string} A source string representation
    */
   toString() {
-    return sourceRuleToString(this.source);
+    return sourceRuleToString(this._source);
   }
 };
 
