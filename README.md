@@ -18,8 +18,8 @@ The fastest way to get started is to serve JavaScript from the [npmcdn](https://
 
 ```html
 <!-- NOTE: See https://npmcdn.com how to use specific vesion. -->
-<!-- NOTE: not minified version - https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js -->
-<script src="https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.min.js"></script>
+<!-- NOTE: not minified version - https://npmcdn.com/odata-filter-builder@^0.1/dist/odata-filter-builder.js -->
+<script src="https://npmcdn.com/odata-filter-builder@^0.1/dist/odata-filter-builder.min.js"></script>
 ```
 
 ```js
@@ -30,7 +30,7 @@ var f = ODataFilterBuilder;
 If you'd like to use [bower](http://bower.io):
 
 ```sh
-$ bower install --save https://npmcdn.com/odata-filter-builder@^0.0/dist/odata-filter-builder.js
+$ bower install --save https://npmcdn.com/odata-filter-builder@^0.1/dist/odata-filter-builder.js
 ```
 
 And it's just as easy with [npm](http://npmjs.com):
@@ -47,7 +47,7 @@ import f from 'odata-filter-builder';
 var f = require('odata-filter-builder');
 ```
 
-Also you can try it [in your browser](https://jsbin.com/lafutap/edit?html,js,console)
+Also you can try it [in your browser](https://jsbin.com/lovate/edit?html,js,console)
 
 ## How to use
 
