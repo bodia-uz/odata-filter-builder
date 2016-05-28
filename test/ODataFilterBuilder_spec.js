@@ -364,5 +364,19 @@ describe('OData filter builder', () => {
       expect(f.isODataFilterBuilder(filter)).to.equal(true);
       expect(f.isODataFilterBuilder({})).to.equal(false);
     });
+
+    it('prototype.isEmpty', () => {
+      const filter = f();
+
+      expect(filter.isEmpty()).to.equal(true);
+
+      // is empty after adding caparison with empty value
+      filter.in('property', []);
+      expect(filter.isEmpty()).to.equal(true);
+      
+      // is not empty after comparison with not empty value
+      filter.in('property', [1, 2, 3]);
+      expect(filter.isEmpty()).to.equal(false);
+    });
   });
 });
