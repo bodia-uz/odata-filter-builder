@@ -4,11 +4,17 @@
   "description": "OData Filter Builder",
   "main": "lib/ODataFilterBuilder.js",
   "jsnext:main": "src/ODataFilterBuilder.js",
-  "typings": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
   },
+  "typings": "./index.d.ts",
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "index.d.ts"
+  ],
   "scripts": {
     "clean": "rm -rf jsdoc lib dist coverage",
     "test": "mocha --compilers js:babel-core/register --recursive",
@@ -20,7 +26,7 @@
     "check": "npm run lint && npm run test",
     "build:lib": "rollup -c -f cjs src/ODataFilterBuilder.js > lib/ODataFilterBuilder.js",
     "build:umd": "rollup -c -f umd -n ODataFilterBuilder src/ODataFilterBuilder.js > dist/odata-filter-builder.js",
-    "build:umd:min": "rollup -c -f umd -n ODataFilterBuilder src/ODataFilterBuilder.js | uglifyjs > dist/odata-filter-builder.min.js",
+    "build:umd:min": "rollup -c -f umd -n ODataFilterBuilder src/ODataFilterBuilder.js | uglifyjs  --compress --mangle > dist/odata-filter-builder.min.js",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md"
   },
