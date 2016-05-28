@@ -190,6 +190,10 @@ const proto = {
     return this._add(endsWith(field, value));
   },
 
+  isEmpty() {
+    return this._source.rules.length === 0;
+  },
+
   /**
    * Convert filter builder instance to string
    * @this {ODataFilterBuilder}
