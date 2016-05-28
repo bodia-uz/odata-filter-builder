@@ -356,4 +356,13 @@ describe('OData filter builder', () => {
           .to.equal("((contains(tolower(Name), 'google')) or (contains(tolower(Name), 'yandex'))) and (Type/Name eq 'Search Engine')");
     });
   });
+
+  describe('helpers', () => {
+    it('isODataFilterBuilder', () => {
+      const filter = f().eq('Type/Id', 2);
+
+      expect(f.isODataFilterBuilder(filter)).to.equal(true);
+      expect(f.isODataFilterBuilder({})).to.equal(false);
+    });
+  });
 });

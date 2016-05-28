@@ -10,6 +10,11 @@ function ODataFilterBuilder(condition = 'and') {
   };
 }
 
+function isODataFilterBuilder(obj) {
+  return obj instanceof ODataFilterBuilder;
+}
+
 export {
-    ODataFilterBuilder
+    ODataFilterBuilder,
+    isODataFilterBuilder
 };
