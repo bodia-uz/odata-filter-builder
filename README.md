@@ -14,12 +14,12 @@ for
 
 ## Installation
 
-The fastest way to get started is to serve JavaScript from the [npmcdn](https://npmcdn.com):
+The fastest way to get started is to serve JavaScript from the [unpkg](https://unpkg.com):
 
 ```html
-<!-- NOTE: See https://npmcdn.com how to use specific vesion. -->
-<!-- NOTE: not minified version - https://npmcdn.com/odata-filter-builder@^0.1/dist/odata-filter-builder.js -->
-<script src="https://npmcdn.com/odata-filter-builder@^0.1/dist/odata-filter-builder.min.js"></script>
+<!-- NOTE: See https://unpkg.com how to use specific vesion. -->
+<!-- NOTE: not minified version - https://unpkg.com/odata-filter-builder@^0.1/dist/odata-filter-builder.js -->
+<script src="https://unpkg.com/odata-filter-builder@^0.1/dist/odata-filter-builder.min.js"></script>
 ```
 
 ```js
@@ -30,7 +30,7 @@ var f = ODataFilterBuilder;
 If you'd like to use [bower](http://bower.io):
 
 ```sh
-$ bower install --save https://npmcdn.com/odata-filter-builder@^0.1/dist/odata-filter-builder.js
+$ bower install --save https://unpkg.com/odata-filter-builder@^0.1/dist/odata-filter-builder.js
 ```
 
 And it's just as easy with [npm](http://npmjs.com):
