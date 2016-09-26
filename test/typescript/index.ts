@@ -1,4 +1,4 @@
-import f from '../../index.d.ts';
+import f from '../../index.d';
 
 const filter1 = f()
     .or(f().eq(x => x.toLower('name'), 'apple'))
