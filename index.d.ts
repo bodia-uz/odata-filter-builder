@@ -68,6 +68,7 @@ interface ODataFilterBuilderFunctions {
  * @returns The {@link ODataFilterBuilder} instance.
  */
 interface ODataFilterBuilder {
+    fn(functionName: string, field: string | InputFieldExpression, values: string | number | Array<string | number>, normaliseValues?: boolean, reverse?: boolean): ODataFilterBuilder;
     /**
      * Logical And
      */

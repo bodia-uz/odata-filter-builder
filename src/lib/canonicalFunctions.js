@@ -1,7 +1,7 @@
 import inputFieldToString from './inputFieldToString';
 import normalise from './normaliseValue';
 
-function canonicalFunction(functionName, field, values, normaliseValues = true) {
+function canonicalFunction(functionName, field, values, normaliseValues = true, reverse = false) {
   // make sure that field is string
   field = inputFieldToString(field);
 
@@ -19,7 +19,8 @@ function canonicalFunction(functionName, field, values, normaliseValues = true) 
     values = values.map(normalise);
   }
 
-  return `${functionName}(${field}, ${values.join(', ')})`;
+  return reverse ? `${functionName}(${values.join(', ')}, ${field})` :
+                   `${functionName}(${field}, ${values.join(', ')})`;
 }
 
 function contains(field, value) {
@@ -132,6 +133,7 @@ function indexOf(field, value) {
 }
 
 export {
+    canonicalFunction,
     // logical
     contains,
     startsWith,
@@ -144,5 +146,5 @@ export {
     concat,
     // other
     length,
-    indexOf
+    indexOf,
 };

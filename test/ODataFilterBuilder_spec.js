@@ -357,6 +357,24 @@ describe('OData filter builder', () => {
     });
   });
 
+  describe('fn', () => {
+    it('substringof', () => {
+      const filter = f()
+        .fn('substringof', 'Name', 'John', true, true);
+
+      expect(filter.toString())
+        .to.equal("substringof('John', Name)");
+    });
+
+    it('substringof + toLower', () => {
+      const filter = f()
+        .fn('substringof', x => x.toLower('Name'), 'john', true, true);
+
+      expect(filter.toString())
+        .to.equal("substringof('john', tolower(Name))");
+    });
+  });
+
   describe('helpers', () => {
     it('isODataFilterBuilder', () => {
       const filter = f().eq('Type/Id', 2);
