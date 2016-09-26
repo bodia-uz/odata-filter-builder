@@ -19,8 +19,9 @@ function canonicalFunction(functionName, field, values, normaliseValues = true, 
     values = values.map(normalise);
   }
 
-  return reverse ? `${functionName}(${values.join(', ')}, ${field})` :
-                   `${functionName}(${field}, ${values.join(', ')})`;
+  const functionArgs = !reverse ? [field, ...values]: [...values, field];
+
+  return `${functionName}(${functionArgs.join(', ')})`;
 }
 
 function contains(field, value) {
@@ -146,5 +147,5 @@ export {
     concat,
     // other
     length,
-    indexOf,
+    indexOf
 };
