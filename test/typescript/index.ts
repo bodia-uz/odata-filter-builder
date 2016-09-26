@@ -23,5 +23,8 @@ const filter5 = f()
     .ne('type', 'OS')
     .in('name', ['Apple', 'Microsoft']);
 
+const filter6 = f()
+    .fn('substringof', 'Name', 'John', true, true);
+
 console.log(filter1.toString());
 
