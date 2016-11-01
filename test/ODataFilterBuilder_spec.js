@@ -49,6 +49,34 @@ describe('OData filter builder', () => {
   });
 
   describe('value types', () => {
+    it('string', () => {
+      const filter = f().eq('name', 'test');
+
+      expect(filter.toString())
+          .to.equal('name eq \'test\'');
+    });
+
+    it('number', () => {
+      const filter = f().eq('sum', 200.55);
+
+      expect(filter.toString())
+          .to.equal('sum eq 200.55');
+    });
+
+    it('boolean', () => {
+      const filter = f().eq('isCorrect', true);
+
+      expect(filter.toString())
+          .to.equal('isCorrect eq true');
+    });
+
+    it('null', () => {
+      const filter = f().eq('editedOn', null);
+
+      expect(filter.toString())
+          .to.equal('editedOn eq null');
+    });
+
     it('Date', () => {
       const data = '1995-05-22T21:00:00.000Z';
       const filter = f().gt('createdOn', new Date(data));
