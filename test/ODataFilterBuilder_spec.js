@@ -48,6 +48,16 @@ describe('OData filter builder', () => {
     });
   });
 
+  describe('value types', () => {
+    it('Date', () => {
+      const data = '1995-05-22T21:00:00.000Z';
+      const filter = f().gt('createdOn', new Date(data));
+
+      expect(filter.toString())
+          .to.equal(`createdOn gt ${data}`);
+    });
+  });
+
   describe('logical operators', () => {
 
     const comparators = ['eq', 'ne', 'gt', 'ge', 'lt', 'le'];
