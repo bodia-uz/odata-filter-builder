@@ -78,11 +78,11 @@ describe('OData filter builder', () => {
     });
 
     it('Date', () => {
-      const data = '1995-05-22T21:00:00.000Z';
-      const filter = f().gt('createdOn', new Date(data));
+      const date = '1995-05-22T21:00:00.000Z';
+      const filter = f().gt('createdOn', new Date(date));
 
       expect(filter.toString())
-          .to.equal(`createdOn gt ${data}`);
+          .to.equal(`createdOn gt ${date}`);
     });
   });
 
