@@ -68,7 +68,6 @@ interface ODataFilterBuilderFunctions {
  * @returns The {@link ODataFilterBuilder} instance.
  */
 interface ODataFilterBuilder {
-    fn(functionName: string, field: string | InputFieldExpression, values: string | number | Array<string | number>, normaliseValues?: boolean, reverse?: boolean): ODataFilterBuilder;
     /**
      * Logical And
      */
@@ -176,6 +175,21 @@ interface ODataFilterBuilder {
      * @param value - Value to compare
      */
     endsWith(field: string | InputFieldExpression, value: string): ODataFilterBuilder;
+
+    /**
+     * Custom function
+     * @param functionName - Name of generated function
+     * @param field - The first function parameter
+     * @param values - The second function parameter
+     * @param [normaliseValues=true] - Convert string "value" to "'value'" or not. (Convert by default)
+     * @param [reverse=false] - Swap field and value params in output. (Don't swap by default)
+     */
+    fn(functionName: string, field: string | InputFieldExpression, values: string | number | Array<string | number>, normaliseValues?: boolean, reverse?: boolean): ODataFilterBuilder;
+
+    /**
+     * Check if filter is empty
+     */
+    isEmpty(): boolean
 
     /**
      * Convert filter builder instance to string

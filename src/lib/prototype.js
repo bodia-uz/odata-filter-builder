@@ -41,19 +41,6 @@ const proto = {
     return this;
   },
 
-  /**
-   * Custom function
-   * @param {string} functionName - Name of generated function
-   * @param {string|InputFieldExpression} field - The first function parameter
-   * @param {string|number|Array} values - The second function parameter
-   * @param {boolean} [normaliseValues=true] - Convert string "value" to "'value'" or not. (Convert by default)
-   * @param {boolean} [reverse=false] - Swap field and value params in output. (Don't swap by default)
-   * @returns {*|ODataFilterBuilder} The {@link ODataFilterBuilder} instance
-   */
-  fn(functionName, field, values, normaliseValues, reverse) {
-    return this._add(canonicalFunction(functionName, field, values, normaliseValues, reverse));
-  },
-
   /*
    * Logical Operators
    */
@@ -201,6 +188,19 @@ const proto = {
    */
   endsWith(field, value) {
     return this._add(endsWith(field, value));
+  },
+
+  /**
+   * Custom function
+   * @param {string} functionName - Name of generated function
+   * @param {string|InputFieldExpression} field - The first function parameter
+   * @param {string|number|Array} values - The second function parameter
+   * @param {boolean} [normaliseValues=true] - Convert string "value" to "'value'" or not. (Convert by default)
+   * @param {boolean} [reverse=false] - Swap field and value params in output. (Don't swap by default)
+   * @returns {*|ODataFilterBuilder} The {@link ODataFilterBuilder} instance
+   */
+  fn(functionName, field, values, normaliseValues, reverse) {
+    return this._add(canonicalFunction(functionName, field, values, normaliseValues, reverse));
   },
 
   isEmpty() {
