@@ -132,10 +132,4 @@ $ npm run lint
 $ npm run build
 ```
 
-### JSDoc
-
-```sh
-$ npm run jsdoc
-```
-
 

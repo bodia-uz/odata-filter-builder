@@ -24,7 +24,15 @@ import {
 import * as canonicalFunctions from './lib/canonicalFunctions';
 import isODataFilterBuilder from './lib/isODataFilterBuilder';
 
+/**
+ * {@link ODataFilterBuilder} is util to build $filter part for OData query options.
+ */
 class ODataFilterBuilder {
+  /**
+   * Creates a new {@link ODataFilterBuilder} instance. Can be used without "new" operator.
+   * @param {string} condition - base condition ('and' OR 'or').
+   * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
+   */
   constructor(condition = 'and') {
     if (!(this instanceof ODataFilterBuilder)) {
       return new ODataFilterBuilder(condition);
@@ -214,6 +222,10 @@ class ODataFilterBuilder {
     return this._add(canonicalFunction(functionName, field, values, normaliseValues, reverse));
   }
 
+  /**
+   * Check if {@link ODataFilterBuilder} instance is empty
+   * @returns {boolean} true or false
+   */
   isEmpty() {
     return this._source.rules.length === 0;
   }
