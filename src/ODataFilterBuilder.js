@@ -1,13 +1,13 @@
-import reduceSourceWithRule from './reduceSourceWithRule';
-import inputRuleToString from './inputRuleToString';
-import sourceRuleToString from './sourceRuleToString';
+import reduceSourceWithRule from './lib/reduceSourceWithRule';
+import inputRuleToString from './lib/inputRuleToString';
+import sourceRuleToString from './lib/sourceRuleToString';
 
 import {
   canonicalFunction,
   contains,
   startsWith,
   endsWith
-} from './canonicalFunctions';
+} from './lib/canonicalFunctions';
 
 import {
   not,
@@ -19,10 +19,10 @@ import {
   le,
   compareIn,
   compareNotIn
-} from './comparison';
+} from './lib/comparison';
 
-import * as canonicalFunctions from './canonicalFunctions';
-import isODataFilterBuilder from './isODataFilterBuilder';
+import * as canonicalFunctions from './lib/canonicalFunctions';
+import isODataFilterBuilder from './lib/isODataFilterBuilder';
 
 class ODataFilterBuilder {
   constructor(condition = 'and') {
