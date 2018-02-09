@@ -1,4 +1,4 @@
-import { ODataFilterBuilder } from './constructor';
+import ODataFilterBuilder from './ODataFilterBuilder';
 
 function inputRuleToString(rule) {
   if (typeof rule === 'function') {
