@@ -1,30 +1,41 @@
-import { ODataFilterBuilder } from './constructor';
-
 import reduceSourceWithRule from './reduceSourceWithRule';
 import inputRuleToString from './inputRuleToString';
 import sourceRuleToString from './sourceRuleToString';
 
 import {
-    canonicalFunction,
-    contains,
-    startsWith,
-    endsWith
+  canonicalFunction,
+  contains,
+  startsWith,
+  endsWith
 } from './canonicalFunctions';
 
 import {
-    not,
-    eq,
-    ne,
-    gt,
-    ge,
-    lt,
-    le,
-    compareIn,
-    compareNotIn
+  not,
+  eq,
+  ne,
+  gt,
+  ge,
+  lt,
+  le,
+  compareIn,
+  compareNotIn
 } from './comparison';
 
-const proto = {
-  constructor: ODataFilterBuilder,
+import * as canonicalFunctions from './canonicalFunctions';
+import isODataFilterBuilder from './isODataFilterBuilder';
+
+class ODataFilterBuilder {
+  constructor(condition = 'and') {
+    if (!(this instanceof ODataFilterBuilder)) {
+      return new ODataFilterBuilder(condition);
+    }
+
+    this._condition = condition;
+    this._source = {
+      condition: condition,
+      rules: []
+    };
+  }
 
   /**
    * The 'add' method adds new filter rule with AND or OR condition
@@ -39,7 +50,7 @@ const proto = {
     // NOTE: if condition not provider, source condition uses
     this._source = reduceSourceWithRule(this._source, inputRuleToString(rule), condition);
     return this;
-  },
+  }
 
   /*
    * Logical Operators
@@ -52,7 +63,7 @@ const proto = {
    */
   and(rule) {
     return this._add(rule, 'and');
-  },
+  }
 
   /**
    * Logical Or
@@ -61,7 +72,7 @@ const proto = {
    */
   or(rule) {
     return this._add(rule, 'or');
-  },
+  }
 
   /**
    * Logical Negation
@@ -70,7 +81,7 @@ const proto = {
    */
   not(rule) {
     return this._add(not(rule));
-  },
+  }
 
   /**
    * Equal
@@ -81,7 +92,7 @@ const proto = {
    */
   eq(field, value, normaliseValue) {
     return this._add(eq(field, value, normaliseValue));
-  },
+  }
 
   /**
    * Not Equal
@@ -92,7 +103,7 @@ const proto = {
    */
   ne(field, value, normaliseValue) {
     return this._add(ne(field, value, normaliseValue));
-  },
+  }
 
   /**
    * Greater Than
@@ -103,7 +114,7 @@ const proto = {
    */
   gt(field, value, normaliseValue) {
     return this._add(gt(field, value, normaliseValue));
-  },
+  }
 
   /**
    * Greater than or Equal
@@ -114,7 +125,7 @@ const proto = {
    */
   ge(field, value, normaliseValue) {
     return this._add(ge(field, value, normaliseValue));
-  },
+  }
 
   /**
    * Less Than
@@ -125,7 +136,7 @@ const proto = {
    */
   lt(field, value, normaliseValue) {
     return this._add(lt(field, value, normaliseValue));
-  },
+  }
 
   /**
    * Less than or Equal
@@ -136,7 +147,7 @@ const proto = {
    */
   le(field, value, normaliseValue) {
     return this._add(le(field, value, normaliseValue));
-  },
+  }
 
   /**
    * @param {string|InputFieldExpression} field - Field to compare
@@ -146,7 +157,7 @@ const proto = {
    */
   in(field, values, normaliseValues) {
     return this._add(compareIn(field, values, normaliseValues));
-  },
+  }
 
   /**
    * @param {string|InputFieldExpression} field - Field to compare
@@ -156,7 +167,7 @@ const proto = {
    */
   notIn(field, values, normaliseValues) {
     return this._add(compareNotIn(field, values, normaliseValues));
-  },
+  }
 
   // Canonical Functions
 
@@ -168,7 +179,7 @@ const proto = {
    */
   contains(field, value) {
     return this._add(contains(field, value));
-  },
+  }
 
   /**
    * The startswith function returns true if the first parameter string value starts with the second parameter string value.
@@ -178,7 +189,7 @@ const proto = {
    */
   startsWith(field, value) {
     return this._add(startsWith(field, value));
-  },
+  }
 
   /**
    * The endswith function returns true if the first parameter string value ends with the second parameter string value.
@@ -188,7 +199,7 @@ const proto = {
    */
   endsWith(field, value) {
     return this._add(endsWith(field, value));
-  },
+  }
 
   /**
    * Custom function
@@ -201,11 +212,11 @@ const proto = {
    */
   fn(functionName, field, values, normaliseValues, reverse) {
     return this._add(canonicalFunction(functionName, field, values, normaliseValues, reverse));
-  },
+  }
 
   isEmpty() {
     return this._source.rules.length === 0;
-  },
+  }
 
   /**
    * Convert filter builder instance to string
@@ -215,6 +226,12 @@ const proto = {
   toString() {
     return sourceRuleToString(this._source);
   }
-};
+}
 
-export default proto;
+ODataFilterBuilder.and = () => new ODataFilterBuilder('and');
+ODataFilterBuilder.or = () => new ODataFilterBuilder('or');
+
+ODataFilterBuilder.functions = canonicalFunctions;
+ODataFilterBuilder.isODataFilterBuilder = isODataFilterBuilder;
+
+export default ODataFilterBuilder;
