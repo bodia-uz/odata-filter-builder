@@ -421,13 +421,6 @@ describe('OData filter builder', () => {
   });
 
   describe('helpers', () => {
-    it('isODataFilterBuilder', () => {
-      const filter = f().eq('Type/Id', 2);
-
-      expect(f.isODataFilterBuilder(filter)).toBe(true);
-      expect(f.isODataFilterBuilder({})).toBe(false);
-    });
-
     it('prototype.isEmpty', () => {
       const filter = f();
 

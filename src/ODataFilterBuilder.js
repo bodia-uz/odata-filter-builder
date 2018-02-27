@@ -22,7 +22,6 @@ import {
 } from './lib/comparison';
 
 import * as canonicalFunctions from './lib/canonicalFunctions';
-import isODataFilterBuilder from './lib/isODataFilterBuilder';
 
 class ODataFilterBuilder {
   constructor(condition = 'and') {
@@ -232,6 +231,5 @@ ODataFilterBuilder.and = () => new ODataFilterBuilder('and');
 ODataFilterBuilder.or = () => new ODataFilterBuilder('or');
 
 ODataFilterBuilder.functions = canonicalFunctions;
-ODataFilterBuilder.isODataFilterBuilder = isODataFilterBuilder;
 
 export default ODataFilterBuilder;
