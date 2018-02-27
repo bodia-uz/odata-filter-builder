@@ -44,7 +44,7 @@ import f from 'odata-filter-builder';
 ```
 ```js
 // using CommonJS modules
-var f = require('odata-filter-builder');
+var f = require('odata-filter-builder').ODataFilterBuilder;
 ```
 
 Also you can try it [in your browser](https://jsbin.com/lovate/edit?html,js,console)

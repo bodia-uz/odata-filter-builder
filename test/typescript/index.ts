@@ -1,4 +1,4 @@
-import f from '../../index.d';
+import f, { canonicalFunctions } from '../../index.d';
 
 const filter1 = f()
     .or(f().eq(x => x.toLower('name'), 'apple'))
@@ -25,6 +25,9 @@ const filter5 = f()
 
 const filter6 = f()
     .fn('substringof', 'Name', 'John', true, true);
+
+const filter7 = f()
+    .eq(canonicalFunctions.substring('CompanyName', 1), 'lfreds Futterkiste');
 
 console.log(filter1.toString());
 

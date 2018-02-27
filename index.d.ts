@@ -263,5 +263,16 @@ interface ODataFilterBuilderStatic {
 * for further information.
 */
 declare var ODataFilterBuilder: ODataFilterBuilderStatic;
+
+/**
+ * Canonical Functions
+ */
+declare var canonicalFunctions: ODataFilterBuilderFunctions;
+
+export {
+    ODataFilterBuilder,
+    canonicalFunctions
+}
+
 export default ODataFilterBuilder;
 

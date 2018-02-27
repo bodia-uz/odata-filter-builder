@@ -9,6 +9,9 @@ export default {
         modules: false
       }]],
       babelrc: false
-    })
-  ]
+    }),
+  ],
+  output: {
+    exports: 'named'
+  }
 };

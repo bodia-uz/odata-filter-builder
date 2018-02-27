@@ -232,4 +232,9 @@ ODataFilterBuilder.or = () => new ODataFilterBuilder('or');
 
 ODataFilterBuilder.functions = canonicalFunctions;
 
+export {
+  canonicalFunctions,
+  ODataFilterBuilder
+};
+
 export default ODataFilterBuilder;
