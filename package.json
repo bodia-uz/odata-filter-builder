@@ -30,6 +30,7 @@
     "prebuild": "mkdir -p dist lib",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
     "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md",
+    "version": "node scripts/npm-version.js",
     "prepublishOnly": "npm run clean && npm run check && npm run build"
   },
   "keywords": [
