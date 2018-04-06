@@ -3,7 +3,7 @@
   "version": "1.0.0-0",
   "description": "OData Filter Builder",
   "main": "lib/ODataFilterBuilder.js",
-  "module": "src/ODataFilterBuilder.js",
+  "module": "es/ODataFilterBuilder.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
@@ -12,6 +12,7 @@
   "files": [
     "dist",
     "lib",
+    "es",
     "src",
     "index.d.ts"
   ],
@@ -24,11 +25,12 @@
     "coveralls": "coveralls < coverage/lcov.info",
     "lint": "eslint src test",
     "check": "npm run lint && npm run test",
-    "build:lib": "rollup -c -f cjs src/ODataFilterBuilder.js > lib/ODataFilterBuilder.js",
-    "build:umd": "rollup -c -f umd -n ODataFilterBuilder src/ODataFilterBuilder.js > dist/odata-filter-builder.js",
-    "build:umd:min": "rollup -c -f umd -n ODataFilterBuilder src/ODataFilterBuilder.js | uglifyjs  --compress --mangle > dist/odata-filter-builder.min.js",
-    "prebuild": "mkdir -p dist lib",
-    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
+    "build:lib": "rollup -c -f cjs > lib/ODataFilterBuilder.js",
+    "build:es": "rollup -c -f es > es/ODataFilterBuilder.js",
+    "build:umd": "rollup -c -f umd > dist/odata-filter-builder.js",
+    "build:umd:min": "rollup -c -f umd | uglifyjs --compress --mangle > dist/odata-filter-builder.min.js",
+    "prebuild": "mkdir -p dist lib es",
+    "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:umd:min",
     "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md",
     "version": "node scripts/npm-version.js && git add ./README.md",
     "prepublishOnly": "npm run clean && npm run check && npm run build"
