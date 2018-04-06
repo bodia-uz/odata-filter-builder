@@ -1,6 +1,6 @@
 {
   "name": "odata-filter-builder",
-  "version": "1.0.0-0",
+  "version": "1.0.0-1",
   "description": "OData Filter Builder",
   "main": "lib/ODataFilterBuilder.js",
   "module": "es/ODataFilterBuilder.js",
