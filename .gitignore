@@ -14,3 +14,4 @@ node_modules
 /es
 /coverage
 /jsdoc
+/.rpt2_cache/

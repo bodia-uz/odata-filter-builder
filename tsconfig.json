@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "ES5",
+    "module": "ESNext",
+    "types": ["jest"]
+  }
+}

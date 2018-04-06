@@ -1,6 +1,0 @@
-{
-  "presets": [
-    // NOTE: loose mode is requird for valid work
-    ["@babel/preset-env", {"loose": true}]
-  ]
-}
