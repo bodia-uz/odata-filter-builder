@@ -1,6 +1,8 @@
 import ODataFilterBuilder from '../ODataFilterBuilder';
 
-function inputRuleToString(rule) {
+import { IInputRule } from '../types';
+
+function inputRuleToString(rule: IInputRule): string {
   if (typeof rule === 'function') {
     rule = rule(new ODataFilterBuilder());
   }

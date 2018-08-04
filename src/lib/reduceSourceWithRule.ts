@@ -1,3 +1,5 @@
+import { Condition, ISourceRule } from "../types";
+
 /**
  * Reduce source with new rule and/or condition
  * @param {Object} source - Source rule
@@ -6,7 +8,7 @@
  * @returns {Object} updated rule
  * @private
  */
-function reduceSourceWithRule(source, rule, condition) {
+function reduceSourceWithRule(source: ISourceRule, rule: string, condition: Condition) {
   if (rule) {
     if (condition && source.condition !== condition) {
       // if source rules condition different from rule condition

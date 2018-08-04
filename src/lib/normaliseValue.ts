@@ -1,12 +1,12 @@
-function isString(value) {
+function isString(value): boolean {
   return typeof value === 'string';
 }
 
-function isDate(value) {
+function isDate(value): boolean {
   return typeof value === 'object' && Object.prototype.toString.call(value) === '[object Date]';
 }
 
-function normaliseValue(value) {
+function normaliseValue(value): string {
   if (isString(value)) {
     return `'${value}'`;
   }
@@ -15,7 +15,7 @@ function normaliseValue(value) {
     return value.toISOString();
   }
 
-  return value;
+  return String(value);
 }
 
 export default normaliseValue;

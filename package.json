@@ -2,36 +2,27 @@
   "name": "odata-filter-builder",
   "version": "1.0.0-1",
   "description": "OData Filter Builder",
-  "main": "lib/ODataFilterBuilder.js",
-  "module": "es/ODataFilterBuilder.js",
+  "main": "dist/odata-filter-builder.js",
+  "umd:main": "dist/odata-filter-builder.umd.js",
+  "module": "dist/odata-filter-builder.m.js",
+  "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
   },
-  "typings": "./index.d.ts",
   "files": [
     "dist",
-    "lib",
-    "es",
-    "src",
-    "index.d.ts"
+    "src"
   ],
   "scripts": {
-    "clean": "rm -rf jsdoc lib dist coverage",
+    "clean": "rm -rf dist coverage",
+    "lint": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "precoveralls": "npm run test:cov",
-    "coveralls": "coveralls < coverage/lcov.info",
-    "lint": "eslint src test",
     "check": "npm run lint && npm run test",
-    "build:lib": "rollup -c -f cjs > lib/ODataFilterBuilder.js",
-    "build:es": "rollup -c -f es > es/ODataFilterBuilder.js",
-    "build:umd": "rollup -c -f umd > dist/odata-filter-builder.js",
-    "build:umd:min": "rollup -c -f umd | uglifyjs --compress --mangle > dist/odata-filter-builder.min.js",
-    "prebuild": "mkdir -p dist lib es",
-    "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:umd:min",
-    "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md",
+    "coveralls": "npm run test:cov && overalls < coverage/lcov.info",
+    "build": "microbundle --name ODataFilterBuilder --target browser --no-compress",
     "version": "node scripts/npm-version.js && git add ./README.md",
     "prepublishOnly": "npm run clean && npm run check && npm run build"
   },
@@ -42,25 +33,26 @@
   "author": "Bohdan Lyzanets <bogdan.uz@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.39",
-    "@babel/core": "^7.0.0-beta.39",
-    "@babel/preset-env": "^7.0.0-beta.39",
-    "@babel/register": "^7.0.0-beta.39",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "8.2.1",
-    "babel-jest": "^22.2.2",
-    "coveralls": "3.0.0",
-    "eslint": "4.17.0",
-    "jest": "^22.2.2",
-    "jsdoc": "3.5.5",
-    "rollup": "0.55.4",
-    "rollup-plugin-babel": "4.0.0-beta.0",
-    "typescript": "2.7.1",
-    "typescript-definition-tester": "0.0.5",
-    "uglify-js": "3.3.10"
+    "@types/jest": "^23.3.1",
+    "coveralls": "3.0.2",
+    "jest": "^23.4.2",
+    "microbundle": "^0.6.0",
+    "ts-jest": "^23.1.2",
+    "typescript": "3.0.1"
   },
   "jest": {
-    "testRegex": "/test/.*_spec\\.js$",
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ],
     "coverageDirectory": "coverage"
-  }
+  },
+  "dependencies": {}
 }

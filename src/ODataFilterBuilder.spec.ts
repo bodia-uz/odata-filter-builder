@@ -1,13 +1,12 @@
-/*eslint-env node */
-/*global describe, it, expect*/
+import ODataFilterBuilder, { f, and, or, canonicalFunctions } from './ODataFilterBuilder';
 
-import f from '../src/ODataFilterBuilder';
+import { Condition } from './types';
 
 describe('OData filter builder', () => {
   describe('base condition', () => {
     describe('as constructor parameter', () => {
       it('and', () => {
-        const compare1 = f('and')
+        const compare1 = new ODataFilterBuilder(Condition.AND)
             .eq('Id', 1)
             .ne('Type/Id', 3);
 
@@ -16,7 +15,7 @@ describe('OData filter builder', () => {
       });
 
       it('or', () => {
-        const compare1 = f('or')
+        const compare1 = new ODataFilterBuilder(Condition.OR)
             .eq('Id', 1)
             .ne('Type/Id', 3);
 
@@ -25,9 +24,9 @@ describe('OData filter builder', () => {
       });
     });
 
-    describe('as factory method', () => {
+    describe('as factory function', () => {
       it('and', () => {
-        const compareAnd = f.and()
+        const compareAnd = and()
             .eq('Id', 1)
             .ne('Type/Id', 3);
 
@@ -36,7 +35,7 @@ describe('OData filter builder', () => {
       });
 
       it('or', () => {
-        const compareOr = f.or()
+        const compareOr = or()
             .eq('Id', 1)
             .ne('Type/Id', 3);
 
@@ -89,7 +88,7 @@ describe('OData filter builder', () => {
     const comparators = ['eq', 'ne', 'gt', 'ge', 'lt', 'le'];
     const functions = ['contains', 'startsWith', 'endsWith'];
 
-    describe('simple comparation', () => {
+    describe('simple comparision', () => {
       comparators.forEach(operator => {
         it(operator, () => {
           const compareNumber = f()[operator]('Id', 1);
@@ -112,7 +111,7 @@ describe('OData filter builder', () => {
       });
     });
 
-    describe('simple comparation functions', () => {
+    describe('simple comparision functions', () => {
       functions.forEach(func => {
         it(func, () => {
           const compareNumber = f()[func]('Name', 'a');
@@ -204,7 +203,7 @@ describe('OData filter builder', () => {
         });
 
         it('or', () => {
-          const compare = f.or()
+          const compare = or()
               .eq('Id', 1)
               .ne('Type/Id', 3)
               .endsWith('Name', 'a');
@@ -216,7 +215,7 @@ describe('OData filter builder', () => {
 
       describe('combination f().and(f().eq(...))', () => {
         it('and', () => {
-          const compare = f().or()
+          const compare = or()
               .and(f().eq('Id', 1))
               .and(f().ne('Type/Id', 3))
               .and(f().contains('Name', 'a'));
@@ -317,7 +316,7 @@ describe('OData filter builder', () => {
 
     it('indexOf', () => {
       const func1 = f().eq(x => x.indexOf('CompanyName', 'lfreds'), 1);
-      const func2 = f().eq(f.functions.indexOf('CompanyName', 'lfreds'), 1);
+      const func2 = f().eq(canonicalFunctions.indexOf('CompanyName', 'lfreds'), 1);
       const expectedString = "indexof(CompanyName, 'lfreds') eq 1";
 
       expect(func1.toString())
@@ -329,11 +328,11 @@ describe('OData filter builder', () => {
 
     it('substring', () => {
       const func1 = f().eq(x => x.substring('CompanyName', 1), 'lfreds Futterkiste');
-      const func2 = f().eq(f.functions.substring('CompanyName', 1), 'lfreds Futterkiste');
+      const func2 = f().eq(canonicalFunctions.substring('CompanyName', 1), 'lfreds Futterkiste');
       const expectedString1 = "substring(CompanyName, 1) eq 'lfreds Futterkiste'";
 
       const func3 = f().eq(x => x.substring('CompanyName', 1, 2), 'lf');
-      const func4 = f().eq(f.functions.substring('CompanyName', 1, 2), 'lf');
+      const func4 = f().eq(canonicalFunctions.substring('CompanyName', 1, 2), 'lf');
       const expectedString2 = "substring(CompanyName, 1, 2) eq 'lf'";
 
       expect(func1.toString())
@@ -392,7 +391,7 @@ describe('OData filter builder', () => {
     });
 
     it('or + and', () => {
-      const filter = f.or()
+      const filter = or()
           .contains(x => x.toLower('Name'), 'google')
           .contains(x => x.toLower('Name'), 'yandex')
           .and(x => x.eq('Type/Name', 'Search Engine'));

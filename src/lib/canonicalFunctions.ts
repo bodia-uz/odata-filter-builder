@@ -1,7 +1,9 @@
 import inputFieldToString from './inputFieldToString';
 import normalise from './normaliseValue';
 
-function canonicalFunction(functionName, field, values, normaliseValues = true, reverse = false) {
+import { IInputField } from '../types';
+
+function canonicalFunction(functionName: string, field: IInputField, values?, normaliseValues: boolean = true, reverse: boolean = false) {
   // make sure that field is string
   field = inputFieldToString(field);
 
@@ -24,15 +26,15 @@ function canonicalFunction(functionName, field, values, normaliseValues = true, 
   return `${functionName}(${functionArgs.join(', ')})`;
 }
 
-function contains(field, value) {
+function contains(field: IInputField, value: string): string {
   return canonicalFunction('contains', field, value);
 }
 
-function startsWith(field, value) {
+function startsWith(field: IInputField, value: string): string {
   return canonicalFunction('startswith', field, value);
 }
 
-function endsWith(field, value) {
+function endsWith(field: IInputField, value: string): string {
   return canonicalFunction('endswith', field, value);
 }
 
@@ -41,10 +43,10 @@ function endsWith(field, value) {
  * @example
  * f().eq(x => x.toLower('CompanyName'), 'alfreds futterkiste')
  * // tolower(CompanyName) eq 'alfreds futterkiste'
- * @param {string|InputFieldExpression} field - Field
- * @returns {string} A function string
+ * @param field - Field
+ * @returns A function string
  */
-function toLower(field) {
+function toLower(field: IInputField): string {
   return canonicalFunction('tolower', field);
 }
 
@@ -53,10 +55,10 @@ function toLower(field) {
  * @example
  * f().eq(x => x.toUpper('CompanyName'), 'ALFREDS FUTTERKISTE')
  * // toupper(CompanyName) eq 'ALFREDS FUTTERKISTE'
- * @param {string|InputFieldExpression} field - Field
- * @returns {string} A function string
+ * @param field - Field
+ * @returns A function string
  */
-function toUpper(field) {
+function toUpper(field: IInputField): string {
   return canonicalFunction('toupper', field);
 }
 
@@ -65,10 +67,10 @@ function toUpper(field) {
  * @example
  * f().eq(x => x.trim('CompanyName'), 'CompanyName')
  * // trim(CompanyName) eq CompanyName
- * @param {string|InputFieldExpression} field - Field
- * @returns {string} A function string
+ * @param field - Field
+ * @returns A function string
  */
-function trim(field) {
+function trim(field: IInputField): string {
   return canonicalFunction('trim', field);
 }
 
@@ -83,25 +85,25 @@ function trim(field) {
  * f().eq(f.functions.substring('CompanyName', 1, 2), 'lf')
  * // substring(CompanyName, 1, 2) eq 'lf'
  *
- * @param {string|InputFieldExpression} field - The first function parameter
- * @param {...number} values - Second or second and third function parameters
+ * @param field - The first function parameter
+ * @param values - Second or second and third function parameters
  *
- * @returns {string} A function string
+ * @returns A function string
  */
-function substring(field, ...values) {
+function substring(field: IInputField, ...values: number[]): string {
   return canonicalFunction('substring', field, values);
 }
 
 /**
- * @param {string|InputFieldExpression} field - The first function parameter
- * @param {string} value - The second function parameter
- * @param {boolean} [normaliseValue=true] - Convert string "value" to "'value'" or not. (Convert by default)
+ * @param field - The first function parameter
+ * @param value - The second function parameter
+ * @param [normaliseValue=true] - Convert string "value" to "'value'" or not. (Convert by default)
  * @example
  * f().eq(x => x.concat(y => y.concat('City',', '), 'Country', false), 'Berlin, Germany');
  * // concat(concat(City, ', '), 'Country') eq 'Berlin, Germany'
- * @returns {string} A function string
+ * @returns A function string
  */
-function concat(field, value, normaliseValue) {
+function concat(field: IInputField, value: string, normaliseValue?: boolean): string {
   return canonicalFunction('concat', field, [value], normaliseValue);
 }
 
@@ -110,10 +112,10 @@ function concat(field, value, normaliseValue) {
  * @example
  * f().eq(x => x.length('CompanyName'), 19)
  * // length(CompanyName) eq 19
- * @param {string|InputFieldExpression} field - Field
- * @returns {string} A function string
+ * @param field - Field
+ * @returns A function string
  */
-function length(field) {
+function length(field: IInputField): string {
   return canonicalFunction('length', field);
 }
 
@@ -124,12 +126,12 @@ function length(field) {
  * f().eq(x => x.indexOf('CompanyName', 'lfreds'), 1)
  * // indexof(CompanyName,'lfreds') eq 1
  *
- * @param {string|InputFieldExpression} field - The first function parameter
- * @param {string} value - The second function parameter
+ * @param field - The first function parameter
+ * @param value - The second function parameter
  *
- * @returns {string} A function string
+ * @returns A function string
  */
-function indexOf(field, value) {
+function indexOf(field: IInputField, value: string): string {
   return canonicalFunction('indexof', field, [value]);
 }
 

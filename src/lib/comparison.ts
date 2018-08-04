@@ -2,14 +2,16 @@ import inputFieldToString from './inputFieldToString';
 import inputRuleToString from './inputRuleToString';
 import normalise from './normaliseValue';
 
-function not(rule) {
+import { Condition, IInputField, IInputRule } from '../types';
+
+function not(rule: IInputRule): string {
   const ruleString = inputRuleToString(rule);
   if (ruleString) {
     return `not (${ruleString})`;
   }
 }
 
-function compare(field, operator, value, normaliseValue = true) {
+function compare(field: IInputField, operator: string, value: any, normaliseValue: boolean = true): string {
   // make sure that field is string
   field = inputFieldToString(field);
 
@@ -20,7 +22,7 @@ function compare(field, operator, value, normaliseValue = true) {
   return `${field} ${operator} ${value}`;
 }
 
-function compareMap(field, operator, values, normaliseValues = true) {
+function compareMap(field: IInputField, operator: string, values: any | any[], normaliseValues: boolean = true): string[] {
   if (!values) {
     return [];
   }
@@ -35,39 +37,39 @@ function compareMap(field, operator, values, normaliseValues = true) {
   return values.map(value => compare(field, operator, value, normaliseValues));
 }
 
-function eq(field, value, normaliseValue) {
+function eq(field: IInputField, value, normaliseValue: boolean) {
   return compare(field, 'eq', value, normaliseValue);
 }
 
-function ne(field, value, normaliseValue) {
+function ne(field: IInputField, value, normaliseValue: boolean) {
   return compare(field, 'ne', value, normaliseValue);
 }
 
-function gt(field, value, normaliseValue) {
+function gt(field: IInputField, value, normaliseValue: boolean) {
   return compare(field, 'gt', value, normaliseValue);
 }
 
-function ge(field, value, normaliseValue) {
+function ge(field: IInputField, value, normaliseValue: boolean) {
   return compare(field, 'ge', value, normaliseValue);
 }
 
-function lt(field, value, normaliseValue) {
+function lt(field: IInputField, value, normaliseValue: boolean) {
   return compare(field, 'lt', value, normaliseValue);
 }
 
-function le(field, value, normaliseValue) {
+function le(field: IInputField, value, normaliseValue: boolean) {
   return compare(field, 'le', value, normaliseValue);
 }
 
-function joinRules(rules, condition) {
+function joinRules(rules: string[], condition: Condition) {
   return rules.join(` ${condition} `);
 }
 
-function compareIn(field, values, normaliseValues) {
-  return joinRules(compareMap(field, 'eq', values, normaliseValues), 'or');
+function compareIn(field: IInputField, values: any | any[], normaliseValues: boolean) {
+  return joinRules(compareMap(field, 'eq', values, normaliseValues), Condition.OR);
 }
 
-function compareNotIn(field, values, normaliseValues) {
+function compareNotIn(field: IInputField, values: any | any[], normaliseValues: boolean) {
   // return joinRules(compareMap(field, 'ne', values, normaliseValues), 'and')
   return not(compareIn(field, values, normaliseValues));
 }

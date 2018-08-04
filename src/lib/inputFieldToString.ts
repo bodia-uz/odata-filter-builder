@@ -1,6 +1,8 @@
 import * as canonicalFunctions from './canonicalFunctions';
 
-function inputFieldToString(field) {
+import { IInputField } from '../types';
+
+function inputFieldToString(field: IInputField): string {
   return typeof field === 'function' ? field(canonicalFunctions) : field;
 }
 
