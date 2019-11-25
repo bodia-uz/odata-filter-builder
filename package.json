@@ -18,9 +18,9 @@
   ],
   "scripts": {
     "clean": "rm -rf jsdoc lib dist coverage",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test": "jest --testEnvironment node",
+    "test:watch": "jest --watch --testEnvironment node",
+    "test:cov": "jest --coverage --testEnvironment node",
     "precoveralls": "npm run test:cov",
     "coveralls": "coveralls < coverage/lcov.info",
     "lint": "eslint src test",
