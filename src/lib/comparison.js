@@ -67,6 +67,20 @@ function compareIn(field, values, normaliseValues) {
   return joinRules(compareMap(field, 'eq', values, normaliseValues), 'or');
 }
 
+function compareAll(objectValue, normaliseValues) {
+  const keys = Object.keys(objectValue);
+  return joinRules(keys.map(k => {
+    const ov = objectValue[k];
+
+    if(Array.isArray(ov)) {
+      return `(${compareIn(k, ov, normaliseValues)})`;
+    } else {
+      return compare(k, 'eq', ov, normaliseValues);
+    }
+
+  }), 'and');
+}
+
 function compareNotIn(field, values, normaliseValues) {
   // return joinRules(compareMap(field, 'ne', values, normaliseValues), 'and')
   return not(compareIn(field, values, normaliseValues));
@@ -83,5 +97,6 @@ export {
     lt,
     le,
     compareIn,
+    compareAll,
     compareNotIn
 };

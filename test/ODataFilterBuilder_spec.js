@@ -189,6 +189,40 @@ describe('OData filter builder', () => {
             .toBe('not (Type/Id eq 1)');
       });
 
+
+      it('all(object) not normalise', () => {
+        const compare = f()
+            .all({
+              id: 45,
+              name: 'john doe'
+            }, false);
+
+        expect(compare.toString())
+            .toBe('id eq 45 and name eq john doe');
+      });
+
+      it('all(object) normalise', () => {
+        const compare = f()
+            .all({
+              id: 45,
+              name: 'john doe'
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45 and name eq 'john doe'");
+      });    
+      
+      it('all(object) normalise with collection', () => {
+        const compare = f()
+            .all({
+              id: 45,
+              name: 'john doe',
+              category: [1, 2, 3]
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45 and name eq 'john doe' and (category eq 1 or category eq 2 or category eq 3)");
+      });          
     });
 
     describe('multiple compare', () => {
@@ -434,5 +468,5 @@ describe('OData filter builder', () => {
       filter.in('property', [1, 2, 3]);
       expect(filter.isEmpty()).toBe(false);
     });
-  });
+  });  
 });
