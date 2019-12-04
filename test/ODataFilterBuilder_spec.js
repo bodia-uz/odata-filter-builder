@@ -190,9 +190,9 @@ describe('OData filter builder', () => {
       });
 
 
-      it('all(object) not normalise', () => {
+      it('compareAll(object) not normalise', () => {
         const compare = f()
-            .all({
+            .compareAll({
               id: 45,
               name: 'john doe'
             }, false);
@@ -201,9 +201,9 @@ describe('OData filter builder', () => {
             .toBe('id eq 45 and name eq john doe');
       });
 
-      it('all(object) normalise', () => {
+      it('compareAll(object) normalise', () => {
         const compare = f()
-            .all({
+            .compareAll({
               id: 45,
               name: 'john doe'
             }, true);
@@ -212,9 +212,9 @@ describe('OData filter builder', () => {
             .toBe("id eq 45 and name eq 'john doe'");
       });    
       
-      it('all(object) normalise with collection', () => {
+      it('compareAll(object) normalise with collection', () => {
         const compare = f()
-            .all({
+            .compareAll({
               id: 45,
               name: 'john doe',
               category: [1, 2, 3]
@@ -222,7 +222,32 @@ describe('OData filter builder', () => {
 
         expect(compare.toString())
             .toBe("id eq 45 and name eq 'john doe' and (category eq 1 or category eq 2 or category eq 3)");
-      });          
+      });      
+      
+      it('compareAll(object) undefined with single property', () => {
+        const compare = f()
+            .compareAll({
+              id: 45,
+              name: undefined
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45");
+      });            
+
+      it('compareAll(object) undefined with multiple properties', () => {
+        const compare = f()
+            .compareAll({
+              id: 45,
+              name: undefined,
+              category: [1, 2, 3],
+              title: 'My title',
+              subject: undefined
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45 and (category eq 1 or category eq 2 or category eq 3) and title eq 'My title'");
+      });                  
     });
 
     describe('multiple compare', () => {

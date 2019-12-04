@@ -69,16 +69,20 @@ function compareIn(field, values, normaliseValues) {
 
 function compareAll(objectValue, normaliseValues) {
   const keys = Object.keys(objectValue);
-  return joinRules(keys.map(k => {
-    const ov = objectValue[k];
+  const rules = keys
+  .filter(k => typeof objectValue[k] !== 'undefined')
+  .map(field => {
+    const value = objectValue[field];
 
-    if(Array.isArray(ov)) {
-      return `(${compareIn(k, ov, normaliseValues)})`;
+    if(Array.isArray(value)) {
+      return `(${compareIn(field, value, normaliseValues)})`;
     } else {
-      return compare(k, 'eq', ov, normaliseValues);
+      return eq(field, value, normaliseValues);
     }
 
-  }), 'and');
+  });
+
+  return joinRules(rules, 'and');
 }
 
 function compareNotIn(field, values, normaliseValues) {

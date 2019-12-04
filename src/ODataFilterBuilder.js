@@ -164,7 +164,7 @@ class ODataFilterBuilder {
    * @param {boolean} [normaliseValues=true] - Convert string "value" to "'value'" or not. (Convert by default)
    * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
    */
-  all(objectValue, normaliseValues) {
+  compareAll(objectValue, normaliseValues) {
     return this._add(compareAll(objectValue, normaliseValues));
   }
 
