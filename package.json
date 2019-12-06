@@ -55,7 +55,7 @@
     "jsdoc": "3.5.5",
     "rollup": "0.55.4",
     "rollup-plugin-babel": "4.3.3",
-    "typescript": "2.7.1",
+    "typescript": "2.9.2",
     "typescript-definition-tester": "0.0.5",
     "uglify-js": "3.3.10"
   },
