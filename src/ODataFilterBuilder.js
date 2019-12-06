@@ -18,7 +18,8 @@ import {
   lt,
   le,
   compareIn,
-  compareNotIn
+  compareNotIn,
+  compareAll
 } from './lib/comparison';
 
 import * as canonicalFunctions from './lib/canonicalFunctions';
@@ -156,6 +157,15 @@ class ODataFilterBuilder {
    */
   in(field, values, normaliseValues) {
     return this._add(compareIn(field, values, normaliseValues));
+  }
+
+  /**
+   * @param {any} objectValue - Object with property and value to compare all in "and" - Loops through property keys
+   * @param {boolean} [normaliseValues=true] - Convert string "value" to "'value'" or not. (Convert by default)
+   * @returns {ODataFilterBuilder} The {@link ODataFilterBuilder} instance
+   */
+  compareAll(objectValue, normaliseValues) {
+    return this._add(compareAll(objectValue, normaliseValues));
   }
 
   /**

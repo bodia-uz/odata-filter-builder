@@ -189,6 +189,65 @@ describe('OData filter builder', () => {
             .toBe('not (Type/Id eq 1)');
       });
 
+
+      it('compareAll(object) not normalise', () => {
+        const compare = f()
+            .compareAll({
+              id: 45,
+              name: 'john doe'
+            }, false);
+
+        expect(compare.toString())
+            .toBe('id eq 45 and name eq john doe');
+      });
+
+      it('compareAll(object) normalise', () => {
+        const compare = f()
+            .compareAll({
+              id: 45,
+              name: 'john doe'
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45 and name eq 'john doe'");
+      });    
+      
+      it('compareAll(object) normalise with collection', () => {
+        const compare = f()
+            .compareAll({
+              id: 45,
+              name: 'john doe',
+              category: [1, 2, 3]
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45 and name eq 'john doe' and (category eq 1 or category eq 2 or category eq 3)");
+      });      
+      
+      it('compareAll(object) undefined with single property', () => {
+        const compare = f()
+            .compareAll({
+              id: 45,
+              name: undefined
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45");
+      });            
+
+      it('compareAll(object) undefined with multiple properties', () => {
+        const compare = f()
+            .compareAll({
+              id: 45,
+              name: undefined,
+              category: [1, 2, 3],
+              title: 'My title',
+              subject: undefined
+            }, true);
+
+        expect(compare.toString())
+            .toBe("id eq 45 and (category eq 1 or category eq 2 or category eq 3) and title eq 'My title'");
+      });                  
     });
 
     describe('multiple compare', () => {
@@ -434,5 +493,5 @@ describe('OData filter builder', () => {
       filter.in('property', [1, 2, 3]);
       expect(filter.isEmpty()).toBe(false);
     });
-  });
+  });  
 });
