@@ -57,7 +57,7 @@
     "rollup-plugin-babel": "4.3.3",
     "typescript": "2.9.2",
     "typescript-definition-tester": "0.0.6",
-    "uglify-js": "3.3.10"
+    "uglify-js": "3.7.1"
   },
   "jest": {
     "testRegex": "/test/.*_spec\\.js$",
