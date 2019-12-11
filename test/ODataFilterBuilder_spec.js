@@ -232,7 +232,7 @@ describe('OData filter builder', () => {
             }, true);
 
         expect(compare.toString())
-            .toBe("id eq 45");
+            .toBe('id eq 45');
       });            
 
       it('compareAll(object) undefined with multiple properties', () => {
