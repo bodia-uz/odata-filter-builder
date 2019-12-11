@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
   },
-  "typings": "./index.d.ts",
+  "types": "./index.d.ts",
   "files": [
     "dist",
     "lib",
@@ -21,10 +21,11 @@
     "test": "jest --testEnvironment node",
     "test:watch": "jest --watch --testEnvironment node",
     "test:cov": "jest --coverage --testEnvironment node",
+    "test:ts": "tsd",
     "precoveralls": "npm run test:cov",
     "coveralls": "coveralls < coverage/lcov.info",
     "lint": "eslint src test",
-    "check": "npm run lint && npm run test",
+    "check": "npm run lint && npm run test && npm run test:ts",
     "build:lib": "rollup -c -f cjs > lib/ODataFilterBuilder.js",
     "build:es": "rollup -c -f es > es/ODataFilterBuilder.js",
     "build:umd": "rollup -c -f umd > dist/odata-filter-builder.js",
@@ -55,12 +56,15 @@
     "jsdoc": "3.6.3",
     "rollup": "1.27.10",
     "rollup-plugin-babel": "4.3.3",
+    "tsd": "^0.11.0",
     "typescript": "3.7.3",
-    "typescript-definition-tester": "0.0.6",
     "uglify-js": "3.7.2"
   },
   "jest": {
     "testRegex": "/test/.*_spec\\.js$",
     "coverageDirectory": "coverage"
+  },
+  "tsd": {
+    "directory": "test/typescript"
   }
 }
