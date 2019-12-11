@@ -141,6 +141,12 @@ interface ODataFilterBuilder {
     in(field: string | InputFieldExpression, values: any[], normaliseValues?: boolean): ODataFilterBuilder;
 
     /**
+     * @param objectValue - Object with property and value to compare all in "and" - Loops through property keys
+     * @param [normaliseValues=true] - Convert string "value" to "'value'" or not. (Convert by default)
+     */
+    compareAll(objectValue: Record<string, any | any[]>, normaliseValues?: boolean): ODataFilterBuilder;
+
+    /**
      * @param field - Field to compare
      * @param values - Values to compare with
      * @param [normaliseValues=true] - Convert string "value" to "'value'" or not. (Convert by default)

@@ -29,5 +29,20 @@ const filter6 = f()
 const filter7 = f()
     .eq(canonicalFunctions.substring('CompanyName', 1), 'lfreds Futterkiste');
 
+const filter8 = f()
+  .compareAll({
+    id: 45,
+    name: 'john doe',
+    category: [1, 2, 3]
+  });
+
+const filter9 = f()
+  .compareAll({
+    id: 45,
+    name: 'john doe',
+    category: [1, 2, 3]
+  }, false);
+
+
 console.log(filter1.toString());
 
