@@ -52,7 +52,7 @@
     "coveralls": "3.0.9",
     "eslint": "4.19.1",
     "jest": "24.9.0",
-    "jsdoc": "3.5.5",
+    "jsdoc": "3.6.3",
     "rollup": "1.27.10",
     "rollup-plugin-babel": "4.3.3",
     "typescript": "3.7.3",
