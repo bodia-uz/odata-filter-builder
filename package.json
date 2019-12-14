@@ -4,6 +4,7 @@
   "description": "OData Filter Builder",
   "main": "lib/ODataFilterBuilder.js",
   "module": "es/ODataFilterBuilder.js",
+  "browser": "dist/odata-filter-builder.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/bodia-uz/odata-filter-builder.git"
@@ -26,12 +27,7 @@
     "coveralls": "coveralls < coverage/lcov.info",
     "lint": "eslint src test",
     "check": "npm run lint && npm run test && npm run test:ts",
-    "build:lib": "rollup -c -f cjs > lib/ODataFilterBuilder.js",
-    "build:es": "rollup -c -f es > es/ODataFilterBuilder.js",
-    "build:umd": "rollup -c -f umd > dist/odata-filter-builder.js",
-    "build:umd:min": "rollup -c -f umd | uglifyjs --compress --mangle > dist/odata-filter-builder.min.js",
-    "prebuild": "mkdir -p dist lib es",
-    "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:umd:min",
+    "build": "rollup --config",
     "jsdoc": "jsdoc -c ./jsdoc.json -R ./README.md",
     "version": "node scripts/npm-version.js && git add ./README.md",
     "prepublishOnly": "npm run clean && npm run check && npm run build"
@@ -56,9 +52,9 @@
     "jsdoc": "3.6.3",
     "rollup": "1.27.12",
     "rollup-plugin-babel": "4.3.3",
+    "rollup-plugin-terser": "^5.1.3",
     "tsd": "0.11.0",
-    "typescript": "3.7.3",
-    "uglify-js": "3.7.2"
+    "typescript": "3.7.3"
   },
   "jest": {
     "testRegex": "/test/.*_spec\\.js$",
