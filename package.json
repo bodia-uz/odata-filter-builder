@@ -54,7 +54,7 @@
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-terser": "5.1.3",
     "tsd": "0.11.0",
-    "typescript": "3.7.3"
+    "typescript": "3.7.4"
   },
   "jest": {
     "testRegex": "/test/.*_spec\\.js$",
