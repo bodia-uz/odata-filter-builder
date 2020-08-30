@@ -50,7 +50,7 @@
     "eslint": "7.7.0",
     "jest": "26.4.2",
     "jsdoc": "3.6.3",
-    "rollup": "1.29.0",
+    "rollup": "2.26.8",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-terser": "7.0.1",
     "tsd": "0.11.0",
