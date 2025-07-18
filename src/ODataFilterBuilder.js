@@ -48,7 +48,15 @@ class ODataFilterBuilder {
    */
   _add(rule, condition = this._condition) {
     // NOTE: if condition not provider, source condition uses
-    this._source = reduceSourceWithRule(this._source, inputRuleToString(rule), condition);
+    let ruleSource = rule;
+    if (rule instanceof ODataFilterBuilder) {
+      // Preserve nested builder structure so parentheses can be determined later
+      ruleSource = rule._source;
+    } else {
+      ruleSource = inputRuleToString(rule);
+    }
+
+    this._source = reduceSourceWithRule(this._source, ruleSource, condition);
     return this;
   }
 

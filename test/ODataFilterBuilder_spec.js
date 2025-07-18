@@ -12,7 +12,7 @@ describe('OData filter builder', () => {
             .ne('Type/Id', 3);
 
         expect(compare1.toString())
-            .toBe('(Id eq 1) and (Type/Id ne 3)');
+            .toBe('Id eq 1 and Type/Id ne 3');
       });
 
       it('or', () => {
@@ -21,7 +21,7 @@ describe('OData filter builder', () => {
             .ne('Type/Id', 3);
 
         expect(compare1.toString())
-            .toBe('(Id eq 1) or (Type/Id ne 3)');
+            .toBe('Id eq 1 or Type/Id ne 3');
       });
     });
 
@@ -32,7 +32,7 @@ describe('OData filter builder', () => {
             .ne('Type/Id', 3);
 
         expect(compareAnd.toString())
-            .toBe('(Id eq 1) and (Type/Id ne 3)');
+            .toBe('Id eq 1 and Type/Id ne 3');
       });
 
       it('or', () => {
@@ -41,7 +41,7 @@ describe('OData filter builder', () => {
             .ne('Type/Id', 3);
 
         expect(compareOr.toString())
-            .toBe('(Id eq 1) or (Type/Id ne 3)');
+            .toBe('Id eq 1 or Type/Id ne 3');
       });
     });
   });
@@ -259,7 +259,7 @@ describe('OData filter builder', () => {
               .startsWith('Name', 'a');
 
           expect(compare.toString())
-              .toBe("(Id eq 1) and (Type/Id ne 3) and (startswith(Name, 'a'))");
+              .toBe("Id eq 1 and Type/Id ne 3 and startswith(Name, 'a')");
         });
 
         it('or', () => {
@@ -269,7 +269,7 @@ describe('OData filter builder', () => {
               .endsWith('Name', 'a');
 
           expect(compare.toString())
-              .toBe("(Id eq 1) or (Type/Id ne 3) or (endswith(Name, 'a'))");
+              .toBe("Id eq 1 or Type/Id ne 3 or endswith(Name, 'a')");
         });
       });
 
@@ -281,7 +281,7 @@ describe('OData filter builder', () => {
               .and(f().contains('Name', 'a'));
 
           expect(compare.toString())
-              .toBe("(Id eq 1) and (Type/Id ne 3) and (contains(Name, 'a'))");
+              .toBe("Id eq 1 and Type/Id ne 3 and contains(Name, 'a')");
         });
 
         it('or', () => {
@@ -291,7 +291,7 @@ describe('OData filter builder', () => {
               .or(f().contains('Name', 'a'));
 
           expect(compare.toString())
-              .toBe("(Id eq 1) or (Type/Id ne 3) or (contains(Name, 'a'))");
+              .toBe("Id eq 1 or Type/Id ne 3 or contains(Name, 'a')");
         });
 
         it('not', () => {
@@ -301,7 +301,7 @@ describe('OData filter builder', () => {
               .not(f().contains('Name', 'a'));
 
           expect(compare.toString())
-              .toBe("(not (Id eq 1)) and (not (Type/Id ne 3)) and (not (contains(Name, 'a')))");
+              .toBe("not (Id eq 1) and not (Type/Id ne 3) and not (contains(Name, 'a'))");
         });
       });
 
@@ -312,7 +312,7 @@ describe('OData filter builder', () => {
               .and(x => x.ne('Type/Id', 3));
 
           expect(compare.toString())
-              .toBe('(Id eq 1) and (Type/Id ne 3)');
+              .toBe('Id eq 1 and Type/Id ne 3');
         });
 
         it('or', () => {
@@ -321,7 +321,7 @@ describe('OData filter builder', () => {
               .or(x => x.ne('Type/Id', 3));
 
           expect(compare.toString())
-              .toBe('(Id eq 1) or (Type/Id ne 3)');
+              .toBe('Id eq 1 or Type/Id ne 3');
         });
 
         it('not', () => {
@@ -330,7 +330,7 @@ describe('OData filter builder', () => {
               .not(x => x.ne('Type/Id', 3));
 
           expect(compare.toString())
-              .toBe('(not (Id eq 1)) and (not (Type/Id ne 3))');
+              .toBe('not (Id eq 1) and not (Type/Id ne 3)');
         });
 
         it('not in', () => {
@@ -429,7 +429,7 @@ describe('OData filter builder', () => {
         .contains(y => y.toLower('Name'), 'a');
 
       expect(filter.toString())
-          .toBe("(Type/Id eq 2) and (contains(tolower(Name), 'a'))");
+          .toBe("Type/Id eq 2 and contains(tolower(Name), 'a')");
     });
 
     it('not + eq + concat', () => {
@@ -447,7 +447,7 @@ describe('OData filter builder', () => {
           .or(x => x.eq('Type/Name', 'Search Engine'));
 
       expect(filter.toString())
-          .toBe("((contains(tolower(Name), 'google')) and (Type/Name ne 'Search Engine')) or (Type/Name eq 'Search Engine')");
+          .toBe("contains(tolower(Name), 'google') and Type/Name ne 'Search Engine' or Type/Name eq 'Search Engine'");
     });
 
     it('or + and', () => {
@@ -457,7 +457,75 @@ describe('OData filter builder', () => {
           .and(x => x.eq('Type/Name', 'Search Engine'));
 
       expect(filter.toString())
-          .toBe("((contains(tolower(Name), 'google')) or (contains(tolower(Name), 'yandex'))) and (Type/Name eq 'Search Engine')");
+          .toBe("(contains(tolower(Name), 'google') or contains(tolower(Name), 'yandex')) and Type/Name eq 'Search Engine'");
+    });
+  });
+
+  describe('parenthesis edge cases', () => {
+    it('nested groups with same condition omit parentheses', () => {
+      const filter = f()
+          .and(f().eq('Id', 1).eq('Type/Id', 2))
+          .and(x => x.eq('Category', 'A'));
+
+      expect(filter.toString())
+          .toBe("Id eq 1 and Type/Id eq 2 and Category eq 'A'");
+    });
+
+    it('single-rule group with different condition omit parentheses', () => {
+      const filter = f()
+          .or(f().eq('Id', 1))
+          .eq('Type/Id', 2);
+
+      expect(filter.toString())
+          .toBe('Id eq 1 and Type/Id eq 2');
+    });
+
+    it('complex nested grouping', () => {
+      const filter = f()
+          .not(f.or().eq('A', 1).eq('B', 2));
+
+      expect(filter.toString())
+          .toBe('not (A eq 1 or B eq 2)');
+    });
+  });
+
+  describe('complex cases', () => {
+    it('or with multiple and groups', () => {
+      const filter = f.or()
+          .or(f().eq('A', 1).eq('B', 2))
+          .or(f().eq('C', 3).eq('D', 4));
+
+      // "and" binds stronger than "or" in OData, so parentheses are unnecessary
+      // see the ABNF lines 480-512 where andExpr/orExpr apply to boolCommonExpr
+      expect(filter.toString())
+          .toBe('A eq 1 and B eq 2 or C eq 3 and D eq 4');
+    });
+
+    it('not with nested group and additional or group', () => {
+      const filter = f()
+          .not(f.or().eq('A', 1).eq('B', 2))
+          .or(f().eq('C', 3).eq('D', 4));
+
+      expect(filter.toString())
+          .toBe('not (A eq 1 or B eq 2) or C eq 3 and D eq 4');
+    });
+
+    it('and root with nested or groups', () => {
+      const filter = f()
+          .and(f.or().eq('A', 1).eq('B', 2))
+          .and(f.or().eq('C', 3).eq('D', 4));
+
+      expect(filter.toString())
+          .toBe('(A eq 1 or B eq 2) and (C eq 3 or D eq 4)');
+    });
+
+    it('single-rule or group inside and root', () => {
+      const filter = f()
+          .and(f.or().eq('A', 1))
+          .and(f.or().eq('B', 2).eq('C', 3));
+
+      expect(filter.toString())
+          .toBe('A eq 1 and (B eq 2 or C eq 3)');
     });
   });
 
